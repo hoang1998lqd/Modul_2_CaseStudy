@@ -5,13 +5,19 @@ import All_Classes.CRUD;
 import All_Classes.Product;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Method_Brand implements CRUD<Brand>  {
-    protected List<Brand> brandList;
-    public Method_Brand(){
-        brandList = new ArrayList<>();
+
+    protected ArrayList<Brand> brandList;
+
+    public ArrayList<Brand> getBrandList() {
+        return brandList;
     }
+
+    public void setBrandList(ArrayList<Brand> brandList) {
+        this.brandList = brandList;
+    }
+
     @Override
     public Brand getById(int id) {
         for (Brand brand : brandList){

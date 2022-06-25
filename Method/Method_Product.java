@@ -1,17 +1,23 @@
 package Method;
 
-import All_Classes.Brand;
+
 import All_Classes.CRUD;
 import All_Classes.Product;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class Method_Product implements CRUD<Product> {
-    protected List<Product> productList ;
-    public Method_Product(){
-        productList = new ArrayList<>();
+    protected ArrayList<Product> productList ;
+
+    public ArrayList<Product> getProductList() {
+        return productList;
     }
+
+    public void setProductList(ArrayList<Product> productList) {
+        this.productList = productList;
+    }
+
     @Override
     public Product getById(int id) {
         for (Product product : productList){
