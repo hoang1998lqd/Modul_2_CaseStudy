@@ -1,23 +1,26 @@
 package Method;
 
 import All_Classes.Brand;
+import All_Classes.Product;
 import All_Classes.ReadAndWrite;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class Brand_ReadAndWrite implements ReadAndWrite<Brand> {
+public class Product_ReadAndWrite implements ReadAndWrite<Product> {
+
+
     @Override
-    public ArrayList<Brand> readFile() {
-        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\Data\\Brand.txt");
+    public ArrayList<Product> readFile() {
+        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\Data\\Product.txt");
         try{
             if (!file.exists()){
                 file.createNewFile();
             }
             ObjectInputStream read = new ObjectInputStream(new FileInputStream(file));
-            ArrayList<Brand> brands = (ArrayList<Brand>) read.readObject();
+            ArrayList<Product> products = (ArrayList<Product>) read.readObject();
             read.close();
-            return brands;
+            return products;
         }catch (Exception e){
             e.getMessage();
         }
@@ -25,8 +28,8 @@ public class Brand_ReadAndWrite implements ReadAndWrite<Brand> {
     }
 
     @Override
-    public void writeFile(ArrayList<Brand> list) throws IOException {
-        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\Data\\Brand.txt");
+    public void writeFile(ArrayList<Product> list) throws IOException {
+        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\Data\\Product.txt");
 
         try {
             if (!file.exists()){
@@ -42,6 +45,5 @@ public class Brand_ReadAndWrite implements ReadAndWrite<Brand> {
         catch (IOException  e){
             e.getMessage();
         }
-
     }
 }

@@ -31,7 +31,7 @@ public class Product implements Serializable  {
                 ", Price=" + price +
                 ", Amount=" + amount +
                 ", Color='" + color + '\'' +
-                ", Brand=" + brand.getNameBrand() +
+                ", Brand.txt=" + brand.getNameBrand() +
                 '}';
     }
 

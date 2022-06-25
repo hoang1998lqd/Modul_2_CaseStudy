@@ -39,7 +39,7 @@ public class Brand{
 
     @Override
     public String toString() {
-        return "Brand{" +
+        return "Brand.txt{" +
                 "id=" + id +
                 ", nameBrand='" + nameBrand + '\'' +
                 '}';

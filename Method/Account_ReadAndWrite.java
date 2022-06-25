@@ -2,22 +2,23 @@ package Method;
 
 import All_Classes.Brand;
 import All_Classes.ReadAndWrite;
+import All_Classes.account;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class Brand_ReadAndWrite implements ReadAndWrite<Brand> {
+public class Account_ReadAndWrite implements ReadAndWrite<account> {
     @Override
-    public ArrayList<Brand> readFile() {
-        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\Data\\Brand.txt");
+    public ArrayList<account> readFile() {
+        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\Data\\Account.txt");
         try{
             if (!file.exists()){
                 file.createNewFile();
             }
             ObjectInputStream read = new ObjectInputStream(new FileInputStream(file));
-            ArrayList<Brand> brands = (ArrayList<Brand>) read.readObject();
+            ArrayList<account> accounts = (ArrayList<account>) read.readObject();
             read.close();
-            return brands;
+            return accounts;
         }catch (Exception e){
             e.getMessage();
         }
@@ -25,8 +26,8 @@ public class Brand_ReadAndWrite implements ReadAndWrite<Brand> {
     }
 
     @Override
-    public void writeFile(ArrayList<Brand> list) throws IOException {
-        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\Data\\Brand.txt");
+    public void writeFile(ArrayList<account> list) throws IOException {
+        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\Data\\Account.txt");
 
         try {
             if (!file.exists()){
@@ -42,6 +43,5 @@ public class Brand_ReadAndWrite implements ReadAndWrite<Brand> {
         catch (IOException  e){
             e.getMessage();
         }
-
     }
 }
