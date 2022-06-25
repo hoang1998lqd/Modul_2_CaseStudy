@@ -3,12 +3,15 @@ package Method;
 
 import All_Classes.CRUD;
 import All_Classes.Product;
+import All_Classes.ReadAndWrite;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
 public class Method_Product implements CRUD<Product> {
-    protected ArrayList<Product> productList ;
+    public ReadAndWrite<Product> readAndWrite = new Product_ReadAndWrite();
+    public ArrayList<Product> productList = readAndWrite.readFile();
 
     public ArrayList<Product> getProductList() {
         return productList;
@@ -31,6 +34,11 @@ public class Method_Product implements CRUD<Product> {
     @Override
     public Product add(Product product) {
         productList.add(product);
+        try {
+            readAndWrite.writeFile(productList);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
         return product;
     }
 
@@ -40,6 +48,11 @@ public class Method_Product implements CRUD<Product> {
             if (productList.get(i).getId() == product.getId()){
                 productList.set(i,product);
             }
+        }
+        try {
+            readAndWrite.writeFile(productList);
+        }catch (IOException e){
+            e.printStackTrace();
         }
     }
 

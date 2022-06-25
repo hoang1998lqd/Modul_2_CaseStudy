@@ -1,11 +1,15 @@
 package Method;
 
 import All_Classes.CRUD;
+import All_Classes.ReadAndWrite;
 import All_Classes.User;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Method_User implements CRUD<User> {
-    protected ArrayList<User> UserList ;
+    public ReadAndWrite<User> readAndWrite = new Users_ReadAndWrite();
+    public ArrayList<User> UserList  = readAndWrite.readFile();
 
     public ArrayList<User> getUserList() {
         return UserList;
@@ -28,6 +32,11 @@ public class Method_User implements CRUD<User> {
     @Override
     public User add(User User) {
         UserList.add(User);
+        try{
+            readAndWrite.writeFile(UserList);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
         return User;
     }
 
@@ -38,6 +47,12 @@ public class Method_User implements CRUD<User> {
                 UserList.set(i,User);
             }
         }
+        try{
+            readAndWrite.writeFile(UserList);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -47,6 +62,11 @@ public class Method_User implements CRUD<User> {
                 UserList.remove(User);
                 return User;
             }
+        }
+        try{
+            readAndWrite.writeFile(UserList);
+        }catch (IOException e){
+            e.printStackTrace();
         }
         return null;
     }

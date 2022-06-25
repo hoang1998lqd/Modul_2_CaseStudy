@@ -9,7 +9,7 @@ public class account {
     public account() {
     }
 
-    public account(int  id, String account, String password) {
+    public account( String account, String password) {
         this.id = ID_Account++;
         this.account = account;
         this.password = password;

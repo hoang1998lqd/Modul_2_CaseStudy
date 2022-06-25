@@ -1,12 +1,16 @@
 package Method;
 
 import All_Classes.CRUD;
+import All_Classes.ReadAndWrite;
 import All_Classes.account;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 
 public class Method_Account implements CRUD<account> {
-    protected ArrayList<account> accountList ;
+    public ReadAndWrite<account> readAndWrite = new Account_ReadAndWrite();
+    public ArrayList<account> accountList = readAndWrite.readFile();
 
     public ArrayList<account> getAccountList() {
         return accountList;
@@ -29,6 +33,11 @@ public class Method_Account implements CRUD<account> {
     @Override
     public account add(account account) {
         accountList.add(account);
+        try{
+            readAndWrite.writeFile(accountList);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
         return account;
     }
 
@@ -39,6 +48,11 @@ public class Method_Account implements CRUD<account> {
                 accountList.set(i,account);
             }
         }
+        try {
+            readAndWrite.writeFile(accountList);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -48,6 +62,11 @@ public class Method_Account implements CRUD<account> {
                 accountList.remove(account);
                 return account;
             }
+        }
+        try {
+            readAndWrite.writeFile(accountList);
+        }catch (IOException e){
+            e.printStackTrace();
         }
         return null;
     }

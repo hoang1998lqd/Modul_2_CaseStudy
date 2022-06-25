@@ -8,7 +8,7 @@ public class Brand{
     public Brand() {
     }
 
-    public Brand(int id, String nameBrand) {
+    public Brand( String nameBrand) {
         this.id = ID_BRAND++;
         this.nameBrand = nameBrand;
     }

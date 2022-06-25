@@ -8,7 +8,7 @@ public class order {
    protected Product product; // Thông tin sản phẩm
    protected long totalPrice;
 
-    public order(int id, long count, User user, Product product, long totalPrice) {
+    public order(long count, User user, Product product, long totalPrice) {
         this.id = ID_Order;
         this.count = count;
         this.user = user;

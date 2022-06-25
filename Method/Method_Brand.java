@@ -1,14 +1,16 @@
 package Method;
-
 import All_Classes.Brand;
 import All_Classes.CRUD;
-import All_Classes.Product;
-
+import All_Classes.ReadAndWrite;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Method_Brand implements CRUD<Brand>  {
+    public ReadAndWrite<Brand> readAndWrite = new Brand_ReadAndWrite();
 
-    protected ArrayList<Brand> brandList;
+
+    public ArrayList<Brand> brandList = readAndWrite.readFile();
+
 
     public ArrayList<Brand> getBrandList() {
         return brandList;
@@ -31,6 +33,11 @@ public class Method_Brand implements CRUD<Brand>  {
     @Override
     public Brand add(Brand brand) {
         brandList.add(brand);
+        try {
+            readAndWrite.writeFile(brandList);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
         return brand;
     }
 
@@ -41,6 +48,11 @@ public class Method_Brand implements CRUD<Brand>  {
                 brandList.set(i,brand);
             }
         }
+        try {
+            readAndWrite.writeFile(brandList);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -50,6 +62,11 @@ public class Method_Brand implements CRUD<Brand>  {
                 brandList.remove(brand);
                 return brand;
             }
+        }
+        try {
+            readAndWrite.writeFile(brandList);
+        }catch (IOException e){
+            e.printStackTrace();
         }
         return null;
     }

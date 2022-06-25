@@ -1,13 +1,15 @@
 package Method;
 
 import All_Classes.CRUD;
+import All_Classes.ReadAndWrite;
 import All_Classes.order;
 
 
 import java.util.ArrayList;
 
 public class Method_Oder implements CRUD<order> {
-    protected ArrayList<order> orderList ;
+
+    public ArrayList<order> orderList ;
 
     public ArrayList<order> getOrderList() {
         return orderList;
