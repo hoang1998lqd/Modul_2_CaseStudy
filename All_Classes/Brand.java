@@ -1,6 +1,6 @@
 package All_Classes;
 
-public class Brand {
+public class Brand{
     protected static int ID_BRAND = 1;
     protected int id;
     protected String nameBrand;
@@ -11,6 +11,14 @@ public class Brand {
     public Brand(int id, String nameBrand) {
         this.id = ID_BRAND++;
         this.nameBrand = nameBrand;
+    }
+
+    public static int getIdBrand() {
+        return ID_BRAND;
+    }
+
+    public static void setIdBrand(int idBrand) {
+        ID_BRAND = idBrand;
     }
 
     public int getId() {

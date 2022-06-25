@@ -7,7 +7,7 @@ import All_Classes.Product;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Method_Brand implements CRUD<Brand> {
+public class Method_Brand implements CRUD<Brand>  {
     protected List<Brand> brandList;
     public Method_Brand(){
         brandList = new ArrayList<>();

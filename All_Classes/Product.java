@@ -35,6 +35,14 @@ public class Product implements Serializable  {
                 '}';
     }
 
+    public static int getID_Product() {
+        return ID_Product;
+    }
+
+    public static void setID_Product(int ID_Product) {
+        Product.ID_Product = ID_Product;
+    }
+
     public int getId() {
         return id;
     }
