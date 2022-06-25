@@ -11,7 +11,7 @@ public class User {
     public User() {
     }
 
-    public User(int id, String fullName, long phoneNumber, String address, All_Classes.account account) {
+    public User(String fullName, long phoneNumber, String address, All_Classes.account account) {
         this.id = ID_Product++;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
