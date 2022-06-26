@@ -1,11 +1,9 @@
 package Method;
 
-import All_Classes.Brand;
-import All_Classes.Product;
-import All_Classes.User;
-import All_Classes.account;
+import All_Classes.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Store_Manage {
@@ -14,6 +12,7 @@ public class Store_Manage {
     protected final Method_Product method_product = new Method_Product();
     protected final Method_User method_user = new Method_User();
     protected final Method_Oder method_oder = new Method_Oder();
+    protected final HashMap<String,User> userHashMap = new HashMap<>();
     protected final Scanner scanner = new Scanner(System.in);
 
 
@@ -268,6 +267,44 @@ public class Store_Manage {
 
     public void displayAllUser(){
         method_user.displayAll();
+    }
+
+    // -------------------------Orders-------------------------
+
+
+
+    // Chưa giải quyết được vấn đề lấy thông tin User từ lúc đăng nhập.........
+    // Hiển thị thông tin account khi đăng nhập dưới quyền người dùng..........
+    public order addOrder(){
+        order order = creatOrder();
+        System.out.println("Bạn đã đặt hàng thành công !!! ");
+        method_oder.add(order);
+        return order;
+    }
+
+    public order creatOrder(){
+        System.out.println("---------------------------");
+        System.out.println("Nhập số lượng cần mua: ");
+        long count = Long.parseLong(scanner.nextLine());
+        System.out.println("Nhập ID tài khoản: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        User user = method_user.getById(id);
+        System.out.println("Nhập ID sản phẩm bạn muốn mua: ");
+        int idProduct = Integer.parseInt(scanner.nextLine());
+        Product product = method_product.deleteById(idProduct);
+        long totalPrice = product.getPrice() * count;
+        return new order(count,user,product,totalPrice);
+    }
+
+    public void displayAllOrder(){
+        method_oder.displayAll();
+    }
+
+    public void displayOrderById(){
+        System.out.println("-------------------------------");
+        System.out.println("Nhập ID bạn cần hiển thị: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        method_oder.displayById(id);
     }
 
 }
