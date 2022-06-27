@@ -89,6 +89,14 @@ public class Method_Account implements CRUD<Account> {
             System.out.println(account);
         }
     }
+    public boolean checkAccount(String account){
+        for (Account account1 : accountList){
+            if (account1.getAccount().equals(account)){
+                return false;
+            }
+        }
+        return true;
+    }
 
     
 }

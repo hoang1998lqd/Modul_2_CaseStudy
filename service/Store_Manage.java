@@ -5,10 +5,12 @@ import model.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Store_Manage {
     protected final Method_Account  method_account = new Method_Account();
-    protected final Method_Brand method_brand = new Method_Brand();
+        protected final Method_Brand method_brand = new Method_Brand();
     protected final Method_Product method_product = new Method_Product();
     protected final Method_User method_user = new Method_User();
     protected final Method_Oder method_oder = new Method_Oder();
@@ -17,6 +19,22 @@ public class Store_Manage {
 
 
     //----------------------Account-----------------------------
+
+
+
+    //Check Account theo yêu cầu.
+    public static boolean checkAccountByChar(String account){
+        String regex = "^[a-zA-Z]+[a-zA-Z\\d]\\w{6,30}";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(account);
+        if (matcher.find()){
+            return true;
+        }
+        return false;
+    }
+
+
+
     public Account addAccount(){
         Account account = creatAccount();
         System.out.println("Tạo mới tài khoản thành công !!!");
@@ -25,10 +43,17 @@ public class Store_Manage {
 
     public Account creatAccount(){
         System.out.println("-------------------------");
-        System.out.println("Nhập tên tài khoản: ");
-        String name = scanner.nextLine();
-        System.out.println("Nhập mật khẩu: ");
-        String pass = scanner.nextLine();
+        String name;
+        do {
+            System.out.println("Nhập tên tài khoản: ");
+            name = scanner.nextLine();
+        }while (method_account.checkAccount(name) && !checkAccountByChar(name));
+        String pass;
+        do {
+            System.out.println("Nhập mật khẩu: ");
+            pass = scanner.nextLine();
+        }while (!checkAccountByChar(pass));
+
         return new Account(name,pass);
     }
 
@@ -293,9 +318,36 @@ public class Store_Manage {
         User user = method_user.getById(id);
         System.out.println("Nhập ID sản phẩm bạn muốn mua: ");
         int idProduct = Integer.parseInt(scanner.nextLine());
-        Product product = method_product.deleteById(idProduct);
+        Product product = method_product.getById(idProduct);
         long totalPrice = product.getPrice() * count;
         return new order(count,user,product,totalPrice);
+    }
+
+    public void editOrder(){
+        System.out.println("-------------------------");
+        System.out.println("Nhập ID cần thay đổi: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        order order = method_oder.getById(id);
+        System.out.println("Nhập số lượng mua hàng: ");
+        long count = Long.parseLong(scanner.nextLine());
+        order.setCount(count);
+        System.out.println("Nhập ID sản phẩm bạn muốn mua: ");
+        int idProduct = Integer.parseInt(scanner.nextLine());
+        Product product = method_product.getById(idProduct);
+        long totalPrice = count * product.getPrice();
+        order.setTotalPrice(totalPrice);
+    }
+
+    public void deleteOrderById(){
+        System.out.println("-------------------------");
+        System.out.println("Nhập ID người dùng bạn cần xóa");
+        int id = Integer.parseInt(scanner.nextLine());
+        order order = method_oder.deleteById(id);
+        if (order != null){
+            System.out.println("Xóa đơn hàng thành công !!!");
+        }else {
+            System.out.println("Xóa đơn hàng thất bại do không tìm thấy ID theo yêu cầu !!!");
+        }
     }
 
     public void displayAllOrder(){
@@ -311,13 +363,7 @@ public class Store_Manage {
 
     public static void main(String[] args) {
         Store_Manage manage  = new Store_Manage();
-        manage.displayAllAccount();
         manage.addAccount();
-        manage.displayAllBrand();
-        System.out.println("---------------");
-        manage.displayAllProduct();
-        System.out.println("-----------");
-        manage.displayAllAccount();
 
     }
 

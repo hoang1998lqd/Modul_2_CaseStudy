@@ -35,10 +35,10 @@ public class order  implements Serializable {
     }
 
     public long getCount() {
-        return count = product.getPrice() * count;
+        return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(long count) {
         this.count = count;
     }
 
@@ -59,7 +59,7 @@ public class order  implements Serializable {
     }
 
     public long getTotalPrice() {
-        return totalPrice;
+        return totalPrice = count * product.getPrice();
     }
 
     public void setTotalPrice(long totalPrice) {
