@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 
 public class order  implements Serializable {
-    protected static int ID_Order = 1;
+    public static int ID_Order = 1;
    protected int id;  // ID tự tăng
    protected long count;  // Số lượng mua hàng
    protected User user;  // Thông tin người dùng

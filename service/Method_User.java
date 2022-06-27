@@ -21,8 +21,7 @@ public class Method_User implements CRUD<User> {
 
 
     public int getSize(){
-        int index = UserList.size() - 1;
-        return index;
+        return UserList.size();
     }
 
     @Override

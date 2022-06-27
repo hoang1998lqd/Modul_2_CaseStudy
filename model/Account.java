@@ -3,13 +3,14 @@ package model;
 import java.io.Serializable;
 
 public class Account implements Serializable {
-    protected static int ID_Account = 1;
+    public static int ID_Account = 1;
     protected int id;
     protected String account;
     protected String password;
 
     public Account() {
     }
+
 
     public Account(String account, String password) {
         this.id = ID_Account++;

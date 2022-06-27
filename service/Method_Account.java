@@ -23,6 +23,10 @@ public class Method_Account implements CRUD<Account> {
         this.accountList = accountList;
     }
 
+    public int size() {
+        return accountList.size();
+    }
+
     @Override
     public Account getById(int id) {
         for (Account account : accountList){

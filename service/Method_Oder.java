@@ -18,6 +18,9 @@ public class Method_Oder implements CRUD<order> {
         this.orderList = orderList;
     }
 
+    public int getSize(){
+        return orderList.size();
+    }
     @Override
     public order getById(int id) {
         for (order order : orderList){

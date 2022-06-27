@@ -19,6 +19,9 @@ public class Method_Brand implements CRUD<Brand>  {
     public void setBrandList(ArrayList<Brand> brandList) {
         this.brandList = brandList;
     }
+    public int getSize(){
+        return brandList.size();
+    }
 
     @Override
     public Brand getById(int id) {

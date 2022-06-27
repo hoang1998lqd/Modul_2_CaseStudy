@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 
 public class Product implements Serializable  {
-    protected static int ID_Product = 1;
+    public static int ID_Product = 1;
     protected int id;
     protected String name_product;
     protected long price;

@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 
 public class User  implements Serializable {
-    public static int ID_User = 0;
+    public static int ID_User = 1;
     protected int id;
     protected String fullName;
     protected long phoneNumber;
@@ -14,7 +14,7 @@ public class User  implements Serializable {
     }
 
     public User(String fullName, long phoneNumber, String address, Account account) {
-        this.id = ++ID_User;
+        this.id = ID_User ++;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.address = address;

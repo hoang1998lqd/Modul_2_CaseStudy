@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 
 public class Brand implements Serializable {
-    protected static int ID_BRAND = 1;
+    public static int ID_BRAND = 1;
     protected int id;
     protected String nameBrand;
 

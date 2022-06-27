@@ -52,6 +52,10 @@ public class Store_Manage {
             System.out.println("Nhập mật khẩu: ");
             pass = scanner.nextLine();
         }while (!checkAccountByChar(pass));
+        if (method_account.accountList.size() > 0){
+            Account.ID_Account = method_account.accountList.get(method_user.getSize()-1).getId() + 1;
+
+        }
         return new Account(name,pass);
     }
 
@@ -104,6 +108,9 @@ public class Store_Manage {
         System.out.println("-------------------------");
         System.out.println("Nhập tên thương hiệu laptop: ");
         String nameBrand = scanner.nextLine();
+        if (method_brand.brandList.size() > 0){
+            Brand.ID_BRAND = method_brand.brandList.get(method_brand.getSize() - 1).getId() + 1;
+        }
         return new Brand(nameBrand);
     }
 
@@ -186,6 +193,9 @@ public class Store_Manage {
             }
             brand = method_brand.getById(choice);
         }while (brand == null);
+        if (method_product.productList.size() > 0){
+            Product.ID_Product = method_product.productList.get(method_brand.getSize() - 1).getId() + 1 ;
+        }
         return new Product(name,price,amount,color,brand);
     }
 
@@ -252,7 +262,7 @@ public class Store_Manage {
         System.out.println("Nhập địa chỉ liên hệ: ");
         String address = scanner.nextLine();
         if (method_user.UserList.size() > 0){
-            User.ID_User = method_user.UserList.get(method_user.getSize()).getId();
+            User.ID_User = method_user.UserList.get(method_user.getSize()-1).getId() + 1 ;
         }
         return new User(name,phone,address,account);
     }
@@ -298,11 +308,6 @@ public class Store_Manage {
     }
 
     // -------------------------Orders-------------------------
-
-
-
-    // Chưa giải quyết được vấn đề lấy thông tin User từ lúc đăng nhập.........
-    // Hiển thị thông tin account khi đăng nhập dưới quyền người dùng..........
     public order addOrder(){
         order order = creatOrder();
         System.out.println(order.toString());
@@ -323,6 +328,9 @@ public class Store_Manage {
         int idProduct = Integer.parseInt(scanner.nextLine());
         Product product = method_product.getById(idProduct);
         long totalPrice = product.getPrice() * count;
+        if (method_oder.orderList.size() > 0){
+            order.ID_Order = method_account.accountList.get(method_brand.getSize() - 1).getId() + 1 ;
+        }
         return new order(count,user,product,totalPrice);
     }
 
@@ -367,8 +375,7 @@ public class Store_Manage {
     public static void main(String[] args) {
         Store_Manage manage  = new Store_Manage();
         manage.addAccount();
-//        manage.addAccount();
-        manage.displayAllUser();
+        manage.addAccount();
     }
 
 }

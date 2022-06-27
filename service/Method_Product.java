@@ -20,6 +20,10 @@ public class Method_Product implements CRUD<Product> {
         this.productList = productList;
     }
 
+    public int getSize(){
+        return productList.size();
+    }
+
     @Override
     public Product getById(int id) {
         for (Product product : productList){
