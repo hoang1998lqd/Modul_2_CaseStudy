@@ -32,7 +32,7 @@ public class Brand_ReadAndWrite implements ReadAndWrite<Brand> {
             if (!file.exists()){
                 file.createNewFile();
             }
-            ObjectOutputStream write = new ObjectOutputStream(new FileOutputStream(file,true));
+            ObjectOutputStream write = new ObjectOutputStream(new FileOutputStream(file));
             write.writeObject(list);
             write.close();
         }

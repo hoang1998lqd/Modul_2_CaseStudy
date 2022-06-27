@@ -15,9 +15,9 @@ public class Users_ReadAndWrite implements ReadAndWrite<User> {
                 file.createNewFile();
             }
             ObjectInputStream read = new ObjectInputStream(new FileInputStream(file));
-            ArrayList<User> accounts = (ArrayList<User>) read.readObject();
+            ArrayList<User> users = (ArrayList<User>) read.readObject();
             read.close();
-            return accounts;
+            return users;
         }catch (Exception e){
             e.getMessage();
         }
@@ -31,7 +31,7 @@ public class Users_ReadAndWrite implements ReadAndWrite<User> {
             if (!file.exists()){
                 file.createNewFile();
             }
-            ObjectOutputStream write = new ObjectOutputStream(new FileOutputStream(file,true));
+            ObjectOutputStream write = new ObjectOutputStream(new FileOutputStream(file));
             write.writeObject(list);
             write.close();
         }

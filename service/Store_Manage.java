@@ -33,11 +33,10 @@ public class Store_Manage {
         return false;
     }
 
-
-
     public Account addAccount(){
         Account account = creatAccount();
         System.out.println("Tạo mới tài khoản thành công !!!");
+        userHashMap.put(account.getAccount(),addUser(account));
         return method_account.add(account);
     }
 
@@ -53,7 +52,6 @@ public class Store_Manage {
             System.out.println("Nhập mật khẩu: ");
             pass = scanner.nextLine();
         }while (!checkAccountByChar(pass));
-
         return new Account(name,pass);
     }
 
@@ -62,8 +60,11 @@ public class Store_Manage {
         System.out.println("Nhập ID cần thay đổi mật khẩu: ");
         int id = Integer.parseInt(scanner.nextLine());
         Account account = method_account.getById(id);
-        System.out.println("Nhập mật khẩu mới cần thay đổi: ");
-        String password = scanner.nextLine();
+        String password;
+        do {
+            System.out.println("Nhập mật khẩu mới: ");
+            password = scanner.nextLine();
+        }while (!checkAccountByChar(password));
         account.setPassword(password);
         method_account.update(account);
     }
@@ -235,14 +236,14 @@ public class Store_Manage {
 
     //-----------------------Users---------------------------
 
-    public User addUser(){
-        User user = creatUser();
+    public User addUser(Account account){
+        User user = creatUser(account);
         System.out.println("Tạo mới người dùng thành công !!!");
         method_user.add(user);
         return user;
     }
 
-    public User creatUser(){
+    public User creatUser(Account account ){
         System.out.println("-------------------------");
         System.out.println("Nhập tên người dùng: ");
         String name = scanner.nextLine();
@@ -250,7 +251,9 @@ public class Store_Manage {
         long phone = Long.parseLong(scanner.nextLine());
         System.out.println("Nhập địa chỉ liên hệ: ");
         String address = scanner.nextLine();
-        Account account = method_account.getById(method_account.getAccountList().size());
+        if (method_user.UserList.size() > 0){
+            User.ID_User = method_user.UserList.get(method_user.getSize()).getId();
+        }
         return new User(name,phone,address,account);
     }
 
@@ -364,7 +367,8 @@ public class Store_Manage {
     public static void main(String[] args) {
         Store_Manage manage  = new Store_Manage();
         manage.addAccount();
-
+//        manage.addAccount();
+        manage.displayAllUser();
     }
 
 }
