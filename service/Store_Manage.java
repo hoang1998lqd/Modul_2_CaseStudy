@@ -1,6 +1,6 @@
-package Method;
+package service;
 
-import All_Classes.*;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,26 +17,26 @@ public class Store_Manage {
 
 
     //----------------------Account-----------------------------
-    public account addAccount(){
-        account account = creatAccount();
+    public Account addAccount(){
+        Account account = creatAccount();
         System.out.println("Tạo mới tài khoản thành công !!!");
         return method_account.add(account);
     }
 
-    public account creatAccount(){
+    public Account creatAccount(){
         System.out.println("-------------------------");
         System.out.println("Nhập tên tài khoản: ");
         String name = scanner.nextLine();
         System.out.println("Nhập mật khẩu: ");
         String pass = scanner.nextLine();
-        return new account(name,pass);
+        return new Account(name,pass);
     }
 
     public void editPassword(){
         System.out.println("-------------------------");
         System.out.println("Nhập ID cần thay đổi mật khẩu: ");
         int id = Integer.parseInt(scanner.nextLine());
-        account account = method_account.getById(id);
+        Account account = method_account.getById(id);
         System.out.println("Nhập mật khẩu mới cần thay đổi: ");
         String password = scanner.nextLine();
         account.setPassword(password);
@@ -47,7 +47,7 @@ public class Store_Manage {
         System.out.println("-------------------------");
         System.out.println("Nhập ID tài khoản cần xóa: ");
         int id = Integer.parseInt(scanner.nextLine());
-        account account = method_account.deleteById(id);
+        Account account = method_account.deleteById(id);
         if (account != null){
             System.out.println("Xóa tài khoản thành công !!!");
         }else {
@@ -225,7 +225,7 @@ public class Store_Manage {
         long phone = Long.parseLong(scanner.nextLine());
         System.out.println("Nhập địa chỉ liên hệ: ");
         String address = scanner.nextLine();
-        account account = method_account.getById(method_account.getAccountList().size());
+        Account account = method_account.getById(method_account.getAccountList().size());
         return new User(name,phone,address,account);
     }
 
@@ -277,6 +277,8 @@ public class Store_Manage {
     // Hiển thị thông tin account khi đăng nhập dưới quyền người dùng..........
     public order addOrder(){
         order order = creatOrder();
+        System.out.println(order.toString());
+        System.out.println("----------------------------------");
         System.out.println("Bạn đã đặt hàng thành công !!! ");
         method_oder.add(order);
         return order;
@@ -307,4 +309,18 @@ public class Store_Manage {
         method_oder.displayById(id);
     }
 
+    public static void main(String[] args) {
+        Store_Manage manage  = new Store_Manage();
+        manage.displayAllAccount();
+        manage.addAccount();
+        manage.displayAllBrand();
+        System.out.println("---------------");
+        manage.displayAllProduct();
+        System.out.println("-----------");
+        manage.displayAllAccount();
+
+    }
+
 }
+
+

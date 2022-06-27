@@ -1,11 +1,10 @@
-package Method;
+package service;
 
 
-import All_Classes.CRUD;
-import All_Classes.Product;
-import All_Classes.ReadAndWrite;
+import model.CRUD;
+import model.Product;
+import model.ReadAndWrite;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -36,7 +35,7 @@ public class Method_Product implements CRUD<Product> {
         productList.add(product);
         try {
             readAndWrite.writeFile(productList);
-        }catch (IOException e){
+        }catch (Exception e){
             e.printStackTrace();
         }
         return product;
@@ -51,7 +50,7 @@ public class Method_Product implements CRUD<Product> {
         }
         try {
             readAndWrite.writeFile(productList);
-        }catch (IOException e){
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
@@ -63,6 +62,11 @@ public class Method_Product implements CRUD<Product> {
                 productList.remove(product);
                 return product;
             }
+        }
+        try {
+            readAndWrite.writeFile(productList);
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return null;
     }

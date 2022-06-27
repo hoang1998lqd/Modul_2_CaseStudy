@@ -1,6 +1,8 @@
-package All_Classes;
+package model;
 
-public class order {
+import java.io.Serializable;
+
+public class order  implements Serializable {
     protected static int ID_Order = 1;
    protected int id;  // ID tự tăng
    protected long count;  // Số lượng mua hàng
@@ -66,15 +68,15 @@ public class order {
 
     @Override
     public String toString() {
-        return "order{" +
-                "id=" + id +
-                ", user_name=" + user.getFullName() +
-                ", user_address=" + user.getAddress() +
-                ", product=" + product.getName_product() +
-                ", product=" + product.getColor() +
-                ", product=" + product.getPrice() +
-                ", count=" + count +
-                ", totalPrice=" + totalPrice +
+        return "Đơn hàng{" +
+                ", Tên người dùng: " + user.getFullName() +
+                ", Địa chỉ nhận hàng: " + user.getAddress() +
+                ", Tên sản phẩm: " + product.getName_product() +
+                ", Thương hiệu: " + product.getBrand().getNameBrand() +
+                ", Màu sắc: " + product.getColor() +
+                ", Giá sản phẩm: " + product.getPrice() +
+                ", Số lượng mua: " + count +
+                ", Thành tiền: " + totalPrice + " VNĐ" +
                 '}';
     }
 }

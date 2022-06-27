@@ -1,17 +1,19 @@
-package All_Classes;
+package model;
 
-public class User {
+import java.io.Serializable;
+
+public class User  implements Serializable {
     protected static int ID_Product = 1;
     protected int id;
     protected String fullName;
     protected long phoneNumber;
     protected String address;
-    protected account account;
+    protected Account account;
 
     public User() {
     }
 
-    public User(String fullName, long phoneNumber, String address, All_Classes.account account) {
+    public User(String fullName, long phoneNumber, String address, Account account) {
         this.id = ID_Product++;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
@@ -59,11 +61,11 @@ public class User {
         this.address = address;
     }
 
-    public All_Classes.account getAccount() {
+    public Account getAccount() {
         return account;
     }
 
-    public void setAccount(All_Classes.account account) {
+    public void setAccount(Account account) {
         this.account = account;
     }
 

@@ -1,7 +1,7 @@
-package Method;
-import All_Classes.Brand;
-import All_Classes.CRUD;
-import All_Classes.ReadAndWrite;
+package service;
+import model.Brand;
+import model.CRUD;
+import model.ReadAndWrite;
 import java.io.IOException;
 import java.util.ArrayList;
 

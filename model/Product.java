@@ -1,4 +1,4 @@
-package All_Classes;
+package model;
 
 import java.io.Serializable;
 

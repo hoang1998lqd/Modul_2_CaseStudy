@@ -1,7 +1,7 @@
-package Method;
+package service;
 
-import All_Classes.Brand;
-import All_Classes.ReadAndWrite;
+import model.Brand;
+import model.ReadAndWrite;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Brand_ReadAndWrite implements ReadAndWrite<Brand> {
     @Override
     public ArrayList<Brand> readFile() {
-        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\Data\\Brand.txt");
+        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\data\\Brand.txt");
         try{
             if (!file.exists()){
                 file.createNewFile();
@@ -26,13 +26,13 @@ public class Brand_ReadAndWrite implements ReadAndWrite<Brand> {
 
     @Override
     public void writeFile(ArrayList<Brand> list) throws IOException {
-        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\Data\\Brand.txt");
+        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\data\\Brand.txt");
 
         try {
             if (!file.exists()){
                 file.createNewFile();
             }
-            ObjectOutputStream write = new ObjectOutputStream(new FileOutputStream(file));
+            ObjectOutputStream write = new ObjectOutputStream(new FileOutputStream(file,true));
             write.writeObject(list);
             write.close();
         }

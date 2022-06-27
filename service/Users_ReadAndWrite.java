@@ -1,22 +1,21 @@
-package Method;
+package service;
 
-import All_Classes.Brand;
-import All_Classes.ReadAndWrite;
-import All_Classes.account;
+import model.ReadAndWrite;
+import model.User;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class Account_ReadAndWrite implements ReadAndWrite<account> {
+public class Users_ReadAndWrite implements ReadAndWrite<User> {
     @Override
-    public ArrayList<account> readFile() {
-        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\Data\\Account.txt");
+    public ArrayList<User> readFile() {
+        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\data\\Users.txt");
         try{
             if (!file.exists()){
                 file.createNewFile();
             }
             ObjectInputStream read = new ObjectInputStream(new FileInputStream(file));
-            ArrayList<account> accounts = (ArrayList<account>) read.readObject();
+            ArrayList<User> accounts = (ArrayList<User>) read.readObject();
             read.close();
             return accounts;
         }catch (Exception e){
@@ -26,14 +25,13 @@ public class Account_ReadAndWrite implements ReadAndWrite<account> {
     }
 
     @Override
-    public void writeFile(ArrayList<account> list) throws IOException {
-        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\Data\\Account.txt");
-
+    public void writeFile(ArrayList<User> list) throws IOException {
+        File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\data\\Users.txt");
         try {
             if (!file.exists()){
                 file.createNewFile();
             }
-            ObjectOutputStream write = new ObjectOutputStream(new FileOutputStream(file));
+            ObjectOutputStream write = new ObjectOutputStream(new FileOutputStream(file,true));
             write.writeObject(list);
             write.close();
         }
@@ -44,4 +42,5 @@ public class Account_ReadAndWrite implements ReadAndWrite<account> {
             e.getMessage();
         }
     }
+
 }

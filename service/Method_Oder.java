@@ -1,8 +1,7 @@
-package Method;
+package service;
 
-import All_Classes.CRUD;
-import All_Classes.ReadAndWrite;
-import All_Classes.order;
+import model.CRUD;
+import model.order;
 
 
 import java.util.ArrayList;

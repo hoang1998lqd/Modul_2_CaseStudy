@@ -1,28 +1,31 @@
-package Method;
+package service;
 
-import All_Classes.CRUD;
-import All_Classes.ReadAndWrite;
-import All_Classes.account;
+import model.CRUD;
+import model.Account;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class Method_Account implements CRUD<account> {
-    public ReadAndWrite<account> readAndWrite = new Account_ReadAndWrite();
-    public ArrayList<account> accountList = readAndWrite.readFile();
+public class Method_Account implements CRUD<Account> {
+    public Account_ReadAndWrite readAndWrite = new Account_ReadAndWrite();
+    public ArrayList<Account> accountList;
 
-    public ArrayList<account> getAccountList() {
+    public Method_Account() {
+        accountList = readAndWrite.readFile();
+    }
+
+    public ArrayList<Account> getAccountList() {
         return accountList;
     }
 
-    public void setAccountList(ArrayList<account> accountList) {
+    public void setAccountList(ArrayList<Account> accountList) {
         this.accountList = accountList;
     }
 
     @Override
-    public account getById(int id) {
-        for (account account : accountList){
+    public Account getById(int id) {
+        for (Account account : accountList){
             if (id == account.getId()){
                 return account;
             }
@@ -31,7 +34,7 @@ public class Method_Account implements CRUD<account> {
     }
 
     @Override
-    public account add(account account) {
+    public Account add(Account account) {
         accountList.add(account);
         try{
             readAndWrite.writeFile(accountList);
@@ -42,7 +45,7 @@ public class Method_Account implements CRUD<account> {
     }
 
     @Override
-    public void update(account account) {
+    public void update(Account account) {
         for (int i = 0; i < accountList.size(); i++) {
             if (accountList.get(i).getId() == account.getId()){
                 accountList.set(i,account);
@@ -56,8 +59,8 @@ public class Method_Account implements CRUD<account> {
     }
 
     @Override
-    public account deleteById(int id) {
-        for (account account : accountList){
+    public Account deleteById(int id) {
+        for (Account account : accountList){
             if (id == account.getId()){
                 accountList.remove(account);
                 return account;
@@ -73,7 +76,7 @@ public class Method_Account implements CRUD<account> {
 
     @Override
     public void displayById(int id) {
-        for (account account : accountList){
+        for (Account account : accountList){
             if (id == account.getId()){
                 System.out.println(account);
             }
@@ -82,7 +85,7 @@ public class Method_Account implements CRUD<account> {
 
     @Override
     public void displayAll() {
-        for (account account : accountList){
+        for (Account account : accountList){
             System.out.println(account);
         }
     }

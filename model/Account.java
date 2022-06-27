@@ -1,15 +1,17 @@
-package All_Classes;
+package model;
 
-public class account {
+import java.io.Serializable;
+
+public class Account implements Serializable {
     protected static int ID_Account = 1;
     protected int id;
     protected String account;
     protected String password;
 
-    public account() {
+    public Account() {
     }
 
-    public account( String account, String password) {
+    public Account(String account, String password) {
         this.id = ID_Account++;
         this.account = account;
         this.password = password;

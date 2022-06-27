@@ -1,8 +1,8 @@
-package Method;
+package service;
 
-import All_Classes.CRUD;
-import All_Classes.ReadAndWrite;
-import All_Classes.User;
+import model.CRUD;
+import model.ReadAndWrite;
+import model.User;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package All_Classes;
+package model;
 
 public interface CRUD<E> {
     E getById(int id);
