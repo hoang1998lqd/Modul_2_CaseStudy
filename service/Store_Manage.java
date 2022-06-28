@@ -3,6 +3,7 @@ package service;
 import model.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -27,10 +28,7 @@ public class Store_Manage {
         String regex = "^[a-zA-Z\\d]+[a-zA-Z\\d]\\w{6,30}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(account);
-        if (matcher.find()){
-            return true;
-        }
-        return false;
+        return matcher.find();
     }
 
     public Account addAccount(){
@@ -194,7 +192,7 @@ public class Store_Manage {
             brand = method_brand.getById(choice);
         }while (brand == null);
         if (method_product.productList.size() > 0){
-            Product.ID_Product = method_product.productList.get(method_brand.getSize() - 1).getId() + 1 ;
+            Product.ID_Product = method_product.productList.get(method_product.productList.size() - 1).getId() + 1 ;
         }
         return new Product(name,price,amount,color,brand);
     }
@@ -244,16 +242,50 @@ public class Store_Manage {
         method_product.displayAll();
     }
 
+    // Sắp xếp giá tăng dần hoặc giảm dần
+
+    public void displayUp(){
+        System.out.println("Giá sản phẩm được sắp xếp tăng dần !!!");
+        method_product.productList.sort(method_product.compareUp);
+        displayAllProduct();
+    }
+
+    public void displayDown(){
+        System.out.println("Giá sản phẩm được sắp xếp giảm dần !!!");
+        method_product.productList.sort(method_product.compareDown);
+        displayAllProduct();
+    }
+
+    // Hiển thị theo từng thương hiệu
+
+    public void displayByBrad(Scanner scanner){
+        showListBrand();
+        Brand brand;
+        do {
+            System.out.println("-------------------------");
+            System.out.println("Nhập thương hiệu cho sản phẩm: ");
+            int choice =Integer.parseInt(scanner.nextLine());
+            if (method_brand.getById(choice) == null){
+                System.out.println("Lựa chọn không đúng !!");
+            }
+            brand = method_brand.getById(choice);
+        }while (brand == null);
+        for (Product product : method_product.productList){
+            if (brand.getNameBrand().equals(product.getBrand().getNameBrand())){
+                System.out.println(product);
+            }
+        }
+
+
+    }
+
     //-----------------------Users---------------------------
 
     public static boolean checkPhoneByChar(String phone){
         String regex = "^0[3-9]{1}[1-9]{1}\\d{7}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(phone);
-        if (matcher.find()){
-            return true;
-        }
-        return false;
+        return matcher.find();
     }
 
     public User addUser(Account account){
@@ -390,8 +422,6 @@ public class Store_Manage {
 
     public static void main(String[] args) {
         Store_Manage manage  = new Store_Manage();
-        manage.addAccount();
-        manage.addAccount();
     }
 
 }

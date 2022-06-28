@@ -1,8 +1,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
-public class Product implements Serializable  {
+public class Product implements Serializable {
     public static int ID_Product = 1;
     protected int id;
     protected String name_product;
@@ -91,3 +92,4 @@ public class Product implements Serializable  {
         this.brand = brand;
     }
 }
+

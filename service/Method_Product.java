@@ -5,7 +5,7 @@ import model.CRUD;
 import model.Product;
 import model.ReadAndWrite;
 
-import java.util.ArrayList;
+import java.util.*;
 
 
 public class Method_Product implements CRUD<Product> {
@@ -90,4 +90,22 @@ public class Method_Product implements CRUD<Product> {
             System.out.println(product);
         }
     }
+
+    Comparator<Product> compareUp = new Comparator<Product>() {
+        @Override
+        public int compare(Product o1, Product o2) {
+             return (int) (o1.getPrice() - o2.getPrice());
+        }
+    };
+
+    Comparator<Product> compareDown = new Comparator<Product>() {
+        @Override
+        public int compare(Product o1, Product o2) {
+            return (int) (o2.getPrice() - o1.getPrice());
+        }
+    };
+
+
+
+
 }

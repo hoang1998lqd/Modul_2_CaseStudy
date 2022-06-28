@@ -1,18 +1,37 @@
-import java.util.Scanner;
+import model.Brand;
+import model.Product;
+import service.Method_Brand;
+import service.Method_Product;
+import service.Store_Manage;
+
+import java.awt.image.AreaAveragingScaleFilter;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class test {
+    Method_Brand method_brand = new Method_Brand();
+    Method_Product method_product = new Method_Product();
     public static void main(String[] args) {
-        String regex = "^0[3-9]{1}[1-9]{1}\\d{7}$";
         Scanner scanner = new Scanner(System.in);
-          String a = scanner.nextLine();
-          Pattern pattern = Pattern.compile(regex);
-          Matcher matcher = pattern.matcher(a);
-          if (matcher.find()){
-              System.out.println("Ok");
-          }else {
-              System.out.println("Sai rồi !!!");
-          }
+        Store_Manage store_manage = new Store_Manage();
+//        store_manage.addBrand();
+        store_manage.displayAllBrand();
+//        store_manage.addBrand();
+//        store_manage.addBrand();
+//        store_manage.addProduct();
+//        store_manage.addProduct();
+//        store_manage.addProduct();
+//        store_manage.addProduct();
+        store_manage.displayAllProduct();
+        test test = new test();
+
+
       }
-}
+
+
+
+
+
+
+    }
