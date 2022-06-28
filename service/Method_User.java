@@ -91,4 +91,14 @@ public class Method_User implements CRUD<User> {
             System.out.println(User);
         }
     }
+    public boolean checkPhoneInList(String phone){
+        for (User user : UserList){
+            if (phone.equals(user.getPhoneNumber())){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    
 }

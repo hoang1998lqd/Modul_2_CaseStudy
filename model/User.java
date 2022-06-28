@@ -6,14 +6,14 @@ public class User  implements Serializable {
     public static int ID_User = 1;
     protected int id;
     protected String fullName;
-    protected long phoneNumber;
+    protected String phoneNumber;
     protected String address;
     protected Account account;
 
     public User() {
     }
 
-    public User(String fullName, long phoneNumber, String address, Account account) {
+    public User(String fullName, String phoneNumber, String address, Account account) {
         this.id = ID_User ++;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
@@ -45,11 +45,11 @@ public class User  implements Serializable {
         this.fullName = fullName;
     }
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

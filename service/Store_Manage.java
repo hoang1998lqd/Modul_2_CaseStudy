@@ -13,7 +13,7 @@ public class Store_Manage {
         protected final Method_Brand method_brand = new Method_Brand();
     protected final Method_Product method_product = new Method_Product();
     protected final Method_User method_user = new Method_User();
-    protected final Method_Oder method_oder = new Method_Oder();
+    protected final Method_Order method_oder = new Method_Order();
     protected final HashMap<String,User> userHashMap = new HashMap<>();
     protected final Scanner scanner = new Scanner(System.in);
 
@@ -24,7 +24,7 @@ public class Store_Manage {
 
     //Check Account theo yêu cầu.
     public static boolean checkAccountByChar(String account){
-        String regex = "^[a-zA-Z]+[a-zA-Z\\d]\\w{6,30}";
+        String regex = "^[a-zA-Z\\d]+[a-zA-Z\\d]\\w{6,30}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(account);
         if (matcher.find()){
@@ -246,6 +246,16 @@ public class Store_Manage {
 
     //-----------------------Users---------------------------
 
+    public static boolean checkPhoneByChar(String phone){
+        String regex = "^0[3-9]{1}[1-9]{1}\\d{7}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(phone);
+        if (matcher.find()){
+            return true;
+        }
+        return false;
+    }
+
     public User addUser(Account account){
         User user = creatUser(account);
         System.out.println("Tạo mới người dùng thành công !!!");
@@ -257,8 +267,11 @@ public class Store_Manage {
         System.out.println("-------------------------");
         System.out.println("Nhập tên người dùng: ");
         String name = scanner.nextLine();
-        System.out.println("Nhập số điện thoại liên hệ: ");
-        long phone = Long.parseLong(scanner.nextLine());
+        String phone;
+       do {
+           System.out.println("Nhập số điện thoại liên hệ: ");
+            phone =scanner.nextLine();
+       }while (!checkPhoneByChar(phone) && !method_user.checkPhoneInList(phone));
         System.out.println("Nhập địa chỉ liên hệ: ");
         String address = scanner.nextLine();
         if (method_user.UserList.size() > 0){
@@ -275,8 +288,11 @@ public class Store_Manage {
         System.out.println("Nhập tên mới: ");
         String name = scanner.nextLine();
         user.setFullName(name);
-        System.out.println("Nhập số điện thoại mới: ");
-        long phone = Long.parseLong(scanner.nextLine());
+        String phone;
+        do {
+            System.out.println("Nhập số điện thoại liên hệ: ");
+            phone =scanner.nextLine();
+        }while (!checkPhoneByChar(phone) && method_user.checkPhoneInList(phone));
         user.setPhoneNumber(phone);
         System.out.println("Nhập địa chỉ mới: ");
         String address = scanner.nextLine();

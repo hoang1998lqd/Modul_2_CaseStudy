@@ -6,7 +6,7 @@ import model.order;
 
 import java.util.ArrayList;
 
-public class Method_Oder implements CRUD<order> {
+public class Method_Order implements CRUD<order> {
 
     public ArrayList<order> orderList ;
 
