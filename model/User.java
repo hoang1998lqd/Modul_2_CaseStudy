@@ -73,10 +73,10 @@ public class User  implements Serializable {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", fullName='" + fullName + '\'' +
-                ", phoneNumber=" + phoneNumber +
-                ", address='" + address + '\'' +
-                ", account=" + account +
+                ", Họ và tên: '" + fullName + '\'' +
+                ", Số điện thoại: " + phoneNumber +
+                ", Địa chỉ liên hệ: '" + address + '\'' +
+                ", Tài khoản: " + account +
                 '}';
     }
 }

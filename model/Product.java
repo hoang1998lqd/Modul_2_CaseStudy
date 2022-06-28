@@ -28,11 +28,11 @@ public class Product implements Serializable {
     public String toString() {
         return "Product{" +
                 "ID=" + id +
-                ", Name_product='" + name_product + '\'' +
-                ", Price=" + price +
-                ", Amount=" + amount +
-                ", Color='" + color + '\'' +
-                ", Brand.txt=" + brand.getNameBrand() +
+                ", Tên sản phẩm: '" + name_product + '\'' +
+                ", Giá tiền: " + price +
+                ", Số lượng: " + amount +
+                ", Màu sắc: '" + color + '\'' +
+                ", Thương hiệu: " + brand.getNameBrand() +
                 '}';
     }
 

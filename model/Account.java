@@ -54,8 +54,8 @@ public class Account implements Serializable {
     public String toString() {
         return "account{" +
                 "id=" + id +
-                ", account='" + account + '\'' +
-                ", password='" + password + '\'' +
+                ", Tài khoản: '" + account + '\'' +
+                ", Mật khẩu: '" + password + '\'' +
                 '}';
     }
 }

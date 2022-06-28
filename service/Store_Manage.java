@@ -240,7 +240,26 @@ public class Store_Manage {
 
     public void displayAllProduct(){
         method_product.displayAll();
+        displayZero();
     }
+    // Thay đổi cách hiển thị sản phẩm
+    public void displayZero(){
+        for (Product product : method_product.productList){
+            if (product.getAmount() == 0){
+                System.out.println("Product{" +
+                        "ID=" + product.getId() +
+                        ", Tên sản phẩm: '" + product.getName_product() + '\'' +
+                        ", Giá tiền: " + product.getPrice() +
+                        ", Số lượng: " + "Tạm thời hết hàng" +
+                        ", Màu sắc: '" + product.getColor() + '\'' +
+                        ", Thương hiệu: " + product.getBrand().getNameBrand() +
+                        '}');
+            }
+        }
+    }
+
+
+
 
     // Sắp xếp giá tăng dần hoặc giảm dần
 
@@ -275,9 +294,74 @@ public class Store_Manage {
                 System.out.println(product);
             }
         }
-
-
     }
+
+    public void displayProduct1(){
+        for (Product product : method_product.productList){
+            if (product.getPrice() > 15000000 && product.getPrice() < 20000000 ){
+                System.out.println(product);
+            }
+            else {
+                System.out.println("Hiện không có sản phẩm nào như yêu cầu của bạn !!! ");
+            }
+        }
+    }
+
+    public void displayProduct2(){
+        for (Product product : method_product.productList){
+            if (product.getPrice() > 10000000 && product.getPrice() < 15000000 ){
+                System.out.println(product);
+            } else {
+                System.out.println("Hiện không có sản phẩm nào như yêu cầu của bạn !!! ");
+            }
+        }
+    }
+
+    public void displayProduct3(){
+        for (Product product : method_product.productList){
+            if (product.getPrice() > 20000000 ){
+                System.out.println(product);
+            } else {
+                System.out.println("Hiện không có sản phẩm nào như yêu cầu của bạn !!! ");
+            }
+        }
+    }
+
+
+
+    // Hiển thị theo khoản giá:
+    // 15000000 - 20000000;
+    // 10000000 - 15000000;
+    // > 20000000;
+
+    public void displayByPrice(Scanner scanner ){
+        int choice;
+        do {
+            System.out.println("Mời bạn lựa chọn hiển thị");
+            System.out.println("1. Từ 10,000,000 - 15,000,000.");
+            System.out.println("2. Từ 15,000,000 - 20,000,000.");
+            System.out.println("3. Lớn hơn 20,000,000.");
+            System.out.println("4. Đặt hàng.");
+            choice = Integer.parseInt(scanner.nextLine());
+            switch (choice){
+                case 1:
+                    displayProduct2();
+                    break;
+                case 2:
+                    displayProduct1();
+                    break;
+                case 3:
+                    displayProduct3();
+                    break;
+                case 4:
+                    addOrder();
+                    break;
+            }
+        }while (choice != 0);
+    }
+
+
+
 
     //-----------------------Users---------------------------
 
@@ -365,19 +449,28 @@ public class Store_Manage {
         return order;
     }
 
+    // Kiểm tra số lượng hàng còn trong kho > 0 và số lượng mua phải nhỏ hơn số lương hàng trong kho mới đặt mua được;
+    public boolean checkAmount(Product product, long count){
+        return count <= product.getAmount() && product.getAmount() != 0;
+    }
     public order creatOrder(){
         System.out.println("---------------------------");
-        System.out.println("Nhập số lượng cần mua: ");
-        long count = Long.parseLong(scanner.nextLine());
-        System.out.println("Nhập ID tài khoản: ");
-        int id = Integer.parseInt(scanner.nextLine());
-        User user = method_user.getById(id);
         System.out.println("Nhập ID sản phẩm bạn muốn mua: ");
         int idProduct = Integer.parseInt(scanner.nextLine());
         Product product = method_product.getById(idProduct);
+        long count;
+        do {
+            System.out.println("Nhập số lượng cần mua: ");
+            count = Long.parseLong(scanner.nextLine());
+            int amount = (int) (product.getAmount() - count);
+            product.setAmount(amount);
+        }while (!checkAmount(product,count));
+        System.out.println("Nhập ID tài khoản: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        User user = method_user.getById(id);
         long totalPrice = product.getPrice() * count;
         if (method_oder.orderList.size() > 0){
-            order.ID_Order = method_account.accountList.get(method_brand.getSize() - 1).getId() + 1 ;
+            order.ID_Order = method_account.accountList.get(method_oder.orderList.size() - 1).getId() + 1 ;
         }
         return new order(count,user,product,totalPrice);
     }

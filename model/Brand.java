@@ -43,7 +43,7 @@ public class Brand implements Serializable {
     public String toString() {
         return "Brand.txt{" +
                 "id=" + id +
-                ", nameBrand='" + nameBrand + '\'' +
+                ", Thương hiệu: '" + nameBrand + '\'' +
                 '}';
     }
 }

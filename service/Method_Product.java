@@ -87,7 +87,9 @@ public class Method_Product implements CRUD<Product> {
     @Override
     public void displayAll() {
         for (Product product : productList){
-            System.out.println(product);
+           if (product.getAmount() > 0){
+               System.out.println(product);
+           }
         }
     }
 

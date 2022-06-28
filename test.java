@@ -15,11 +15,11 @@ public class test {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Store_Manage store_manage = new Store_Manage();
-//        store_manage.addBrand();
+        store_manage.addBrand();
         store_manage.displayAllBrand();
 //        store_manage.addBrand();
 //        store_manage.addBrand();
-//        store_manage.addProduct();
+        store_manage.addProduct();
 //        store_manage.addProduct();
 //        store_manage.addProduct();
 //        store_manage.addProduct();
