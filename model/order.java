@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 
-public class order  implements Serializable {
+public class Order implements Serializable {
     public static int ID_Order = 1;
    protected int id;  // ID tự tăng
    protected long count;  // Số lượng mua hàng
@@ -13,7 +13,7 @@ public class order  implements Serializable {
    protected String phoneNumber;
    protected String address;
 
-    public order(long count, User user, Product product, long totalPrice) {
+    public Order(long count, User user, Product product, long totalPrice) {
         this.id = ID_Order ++;
         this.count = count;
         this.user = user;
@@ -21,7 +21,7 @@ public class order  implements Serializable {
         this.totalPrice = totalPrice;
     }
 
-    public order(long count, Product product, long totalPrice, String name, String phoneNumber, String address) {
+    public Order(long count, Product product, long totalPrice, String name, String phoneNumber, String address) {
         this.id = ID_Order ++;
         this.count = count;
         this.product = product;
@@ -36,7 +36,7 @@ public class order  implements Serializable {
     }
 
     public static void setID_Order(int ID_Order) {
-        order.ID_Order = ID_Order;
+        Order.ID_Order = ID_Order;
     }
 
     public int getId() {
@@ -86,7 +86,7 @@ public class order  implements Serializable {
                 ", Số điện thoại: " + user.getPhoneNumber() +
                 ", Địa chỉ nhận hàng: " + user.getAddress() +
                  "\n" +
-                ", Tên sản phẩm: " + product.getName_product() +
+                " Tên sản phẩm: " + product.getName_product() +
                 ", Thương hiệu: " + product.getBrand().getNameBrand() +
                 ", Màu sắc: " + product.getColor() +
                 ", Giá sản phẩm: " + product.getPrice() +
@@ -99,7 +99,8 @@ public class order  implements Serializable {
                 ", Tên người dùng: " + name +
                 ", Số điện thoại: " + phoneNumber +
                 ", Địa chỉ nhận hàng: " + address +
-                ", Tên sản phẩm: " + product.getName_product() +
+                "\n" +
+                "Tên sản phẩm: " + product.getName_product() +
                 ", Thương hiệu: " + product.getBrand().getNameBrand() +
                 ", Màu sắc: " + product.getColor() +
                 ", Giá sản phẩm: " + product.getPrice() +

@@ -9,16 +9,18 @@ public class User  implements Serializable {
     protected String phoneNumber;
     protected String address;
     protected Account account;
+    protected Bank bank;
 
     public User() {
     }
 
-    public User(String fullName, String phoneNumber, String address, Account account) {
+    public User( String fullName, String phoneNumber, String address, Account account, Bank bank) {
         this.id = ID_User ++;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.account = account;
+        this.bank = bank;
     }
 
     public static int getID_Product() {
@@ -69,6 +71,14 @@ public class User  implements Serializable {
         this.account = account;
     }
 
+    public Bank getBank() {
+        return bank;
+    }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -76,6 +86,10 @@ public class User  implements Serializable {
                 ", Họ và tên: '" + fullName + '\'' +
                 ", Số điện thoại: " + phoneNumber +
                 ", Địa chỉ liên hệ: '" + address + '\'' +
+                '\n' +
+                "Số tài khoản: '" + bank.accountNumber + '\'' +
+                ", Số dư toàn khoản: " + bank.getMoney() +
+                ", Mã pin: '" + bank.getCode() + '\'' +
                 ", Tài khoản: " + account +
                 '}';
     }

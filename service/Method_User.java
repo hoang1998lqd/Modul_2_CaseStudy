@@ -1,5 +1,6 @@
 package service;
 
+import model.Bank;
 import model.CRUD;
 import model.ReadAndWrite;
 import model.User;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 public class Method_User implements CRUD<User> {
     public ReadAndWrite<User> readAndWrite = new Users_ReadAndWrite();
     public ArrayList<User> UserList  = readAndWrite.readFile();
+    public ReadAndWrite<Bank> readAndWriteBank = new Bank_ReadAndWrite();
+    public ArrayList<Bank> bankList  = readAndWriteBank.readFile();
 
     public ArrayList<User> getUserList() {
         return UserList;

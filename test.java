@@ -2,12 +2,9 @@ import model.*;
 import service.Method_Brand;
 import service.Method_Product;
 import service.Store_Manage;
-
-import java.awt.image.AreaAveragingScaleFilter;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 public class test {
     Method_Brand method_brand = new Method_Brand();

@@ -3,7 +3,6 @@ package service;
 import model.*;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,8 +13,8 @@ public class Store_Manage implements Serializable {
     public final Method_Product method_product = new Method_Product();
     public final Method_User method_user = new Method_User();
     public final Method_Order method_oder = new Method_Order();
+    public final Method_Bank method_bank = new Method_Bank();
 
-//    public final HashMap<String,User> userHashMap = new HashMap<>();
 
     protected final Scanner scanner = new Scanner(System.in);
 
@@ -108,6 +107,163 @@ public class Store_Manage implements Serializable {
     public void displayAllAccount(){
         method_account.displayAll();
     }
+
+    // --------------------------------Bank-----------------------------
+
+    public static boolean checkAccountNumber(String number){
+        String regex = "^0[3-9][1-9]\\d{10}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(number);
+        return matcher.find();
+    }
+    public static boolean checkBankCode(String number){
+        String regex = "^\\d{6}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(number);
+        return matcher.find();
+    }
+    public Bank addBank(){
+        Bank bank = creatBank();
+        System.out.println("Liên kết tài khoản thành công !!!");
+        return method_bank.add(bank);
+    }
+
+    public Bank creatBank(){
+        System.out.println("-------------------------");
+        String accountNumber;
+        do {
+            System.out.println("Nhập số tài khoản ngân hàng : ");
+            accountNumber = scanner.nextLine();
+        }while (method_bank.checkAccountNumber(accountNumber) && !checkAccountNumber(accountNumber));
+        int money = 0;
+        if (method_bank.bankList.size() > 0){
+            Bank.ID_Bank = method_bank.bankList.get(method_bank.bankList.size()-1).getId() + 1;
+        }
+        String code;
+        do {
+            System.out.println("Nhập mã PIN tài khoản ngân hàng : ");
+            code = scanner.nextLine();
+        }while (!checkBankCode(code));
+
+        return new Bank(accountNumber,money,code);
+    }
+
+    public void updateMoney(){
+        System.out.println("-------------------------");
+        System.out.println("Nhập ID tài khoản: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        User user = method_user.getById(id);
+        String code;
+        int count = 0;
+        do {
+            System.out.println("Nhập mã PIN tài khoản");
+            code = scanner.nextLine();
+            if (method_bank.checkPin(code)){
+                String money;
+                int moneyUpdate;
+                do {
+                    System.out.println("Nhập số tiền bạn cần nạp : ");
+                    money = scanner.nextLine();
+                    moneyUpdate = Integer.parseInt(money) + user.getBank().getMoney();
+                }while (checkAccountNumber(money));
+                user.getBank().setMoney(moneyUpdate);
+
+                method_user.update(user);
+                break;
+            }else {
+                count ++;
+            }
+        }while (count != 3);
+        if (count == 3){
+            System.out.println("Bạn đã nhập sai quá 3 lần xin vui lòng thử lại sau !!!");
+        }
+    }
+    public void  displayBank(){
+        method_bank.displayAll();
+    }
+
+
+
+    //-----------------------Users---------------------------
+
+    public static boolean checkPhoneByChar(String phone){
+        String regex = "^0[3-9][1-9]\\d{7}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(phone);
+        return matcher.find();
+    }
+
+    public User addUser(Account account){
+        User user = creatUser(account);
+        System.out.println("Tạo mới người dùng thành công !!!");
+        method_user.add(user);
+        return user;
+    }
+
+    public User creatUser(Account account){
+        System.out.println("-------------------------");
+        System.out.println("Nhập tên người dùng: ");
+        String name = scanner.nextLine();
+        String phone;
+        do {
+            System.out.println("Nhập số điện thoại liên hệ: ");
+            phone =scanner.nextLine();
+        }while (!checkPhoneByChar(phone) && !method_user.checkPhoneInList(phone));
+        System.out.println("Nhập địa chỉ liên hệ: ");
+        String address = scanner.nextLine();
+        if (method_user.UserList.size() > 0){
+            User.ID_User = method_user.UserList.get(method_user.getSize()-1).getId() + 1 ;
+        }
+        System.out.println("---------------------------------");
+        System.out.println("Liên kết tài khoản ngân hàng !!!");
+        System.out.println("---------------------------------");
+        Bank bank = addBank();
+        return new User(name,phone,address,account,bank);
+    }
+
+    public void editUser(){
+        System.out.println("-------------------------");
+        System.out.println("Nhập ID người dùng cần thay đổi: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        User user = method_user.getById(id);
+        System.out.println("Nhập tên mới: ");
+        String name = scanner.nextLine();
+        user.setFullName(name);
+        String phone;
+        do {
+            System.out.println("Nhập số điện thoại liên hệ: ");
+            phone =scanner.nextLine();
+        }while (!checkPhoneByChar(phone) && method_user.checkPhoneInList(phone));
+        user.setPhoneNumber(phone);
+        System.out.println("Nhập địa chỉ mới: ");
+        String address = scanner.nextLine();
+        user.setAddress(address);
+        method_user.update(user);
+    }
+
+    public void deleteUserById(){
+        System.out.println("-------------------------");
+        System.out.println("Nhập ID người dùng bạn cần xóa");
+        int id = Integer.parseInt(scanner.nextLine());
+        Brand brand = method_brand.deleteById(id);
+        if (brand != null){
+            System.out.println("Xóa người dùng thành công !!!");
+        }else {
+            System.out.println("Xóa người dùng thất bại do không tìm thấy ID theo yêu cầu !!!");
+        }
+    }
+
+    public void displayUserById(){
+        System.out.println("-------------------------");
+        System.out.println("Nhập ID người dùng cần hiển thị");
+        int id = Integer.parseInt(scanner.nextLine());
+        method_user.displayById(id);
+    }
+
+    public void displayAllUser(){
+        method_user.displayAll();
+    }
+
 
     //----------------------Brand----------------------------
 
@@ -372,96 +528,10 @@ public class Store_Manage implements Serializable {
         }while (choice != 0);
     }
 
-    //-----------------------Users---------------------------
-
-    public static boolean checkPhoneByChar(String phone){
-        String regex = "^0[3-9]{1}[1-9]{1}\\d{7}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(phone);
-        return matcher.find();
-    }
-
-    public User addUser(Account account){
-        User user = creatUser(account);
-        System.out.println("Tạo mới người dùng thành công !!!");
-        method_user.add(user);
-        return user;
-    }
-
-    public User creatUser(Account account ){
-        System.out.println("-------------------------");
-        System.out.println("Nhập tên người dùng: ");
-        String name = scanner.nextLine();
-        String phone;
-       do {
-           System.out.println("Nhập số điện thoại liên hệ: ");
-            phone =scanner.nextLine();
-       }while (!checkPhoneByChar(phone) && !method_user.checkPhoneInList(phone));
-        System.out.println("Nhập địa chỉ liên hệ: ");
-        String address = scanner.nextLine();
-        if (method_user.UserList.size() > 0){
-            User.ID_User = method_user.UserList.get(method_user.getSize()-1).getId() + 1 ;
-        }
-        return new User(name,phone,address,account);
-    }
-
-    public void editUser(){
-        System.out.println("-------------------------");
-        System.out.println("Nhập ID người dùng cần thay đổi: ");
-        int id = Integer.parseInt(scanner.nextLine());
-        User user = method_user.getById(id);
-        System.out.println("Nhập tên mới: ");
-        String name = scanner.nextLine();
-        user.setFullName(name);
-        String phone;
-        do {
-            System.out.println("Nhập số điện thoại liên hệ: ");
-            phone =scanner.nextLine();
-        }while (!checkPhoneByChar(phone) && method_user.checkPhoneInList(phone));
-        user.setPhoneNumber(phone);
-        System.out.println("Nhập địa chỉ mới: ");
-        String address = scanner.nextLine();
-        user.setAddress(address);
-        method_user.update(user);
-    }
-
-    public void deleteUserById(){
-        System.out.println("-------------------------");
-        System.out.println("Nhập ID người dùng bạn cần xóa");
-        int id = Integer.parseInt(scanner.nextLine());
-        Brand brand = method_brand.deleteById(id);
-        if (brand != null){
-            System.out.println("Xóa người dùng thành công !!!");
-        }else {
-            System.out.println("Xóa người dùng thất bại do không tìm thấy ID theo yêu cầu !!!");
-        }
-    }
-
-    public void displayUserById(){
-        System.out.println("-------------------------");
-        System.out.println("Nhập ID người dùng cần hiển thị");
-        int id = Integer.parseInt(scanner.nextLine());
-        method_user.displayById(id);
-    }
-
-//    // Hiển thị userHashMap
-//        public void displayUserHashMap(){
-//        Iterator<Map.Entry<String, User>> iterator = userHashMap.entrySet().iterator();
-//            System.out.println("Các key and value: ");
-//            while (iterator.hasNext()) {
-//                System.out.println(iterator.next());
-//            }
-//    }
-
-
-
-    public void displayAllUser(){
-        method_user.displayAll();
-    }
 
     // -------------------------Orders-------------------------
-    public order addOrder(String account){
-        order order = creatOrder(account);
+    public Order addOrder(String account){
+        Order order = creatOrder(account);
         System.out.println(order.toString());
         System.out.println("----------------------------------");
         System.out.println("Bạn đã đặt hàng thành công !!! ");
@@ -473,7 +543,7 @@ public class Store_Manage implements Serializable {
     public boolean checkAmount(Product product, long count){
         return count <= product.getAmount() && product.getAmount() != 0;
     }
-    public order creatOrder(String account){
+    public Order creatOrder(String account){
         System.out.println("---------------------------");
         System.out.println("Nhập ID sản phẩm bạn muốn mua: ");
         int idProduct = Integer.parseInt(scanner.nextLine());
@@ -485,15 +555,12 @@ public class Store_Manage implements Serializable {
             int amount = (int) (product.getAmount() - count);
             product.setAmount(amount);
         }while (!checkAmount(product,count));
-////        System.out.println("Nhập ID tài khoản: ");
-////        int id = Integer.parseInt(scanner.nextLine());
-//        User user = method_user.getById(id);
         User user = getUserByAccount(account);
         long totalPrice = product.getPrice() * count;
         if (method_oder.orderList.size() > 0){
-            order.ID_Order = method_account.accountList.get(method_oder.orderList.size() - 1).getId() + 1 ;
+            Order.ID_Order = method_account.accountList.get(method_oder.orderList.size() - 1).getId() + 1 ;
         }
-        return new order(count,user,product,totalPrice);
+        return new Order(count,user,product,totalPrice);
     }
 
     // Tìm User thông qua Account
@@ -505,15 +572,11 @@ public class Store_Manage implements Serializable {
         }
         return null;
     }
-
-
-
-
     public void editOrder(){
         System.out.println("-------------------------");
         System.out.println("Nhập ID cần thay đổi: ");
         int id = Integer.parseInt(scanner.nextLine());
-        order order = method_oder.getById(id);
+        Order order = method_oder.getById(id);
         System.out.println("Nhập số lượng mua hàng: ");
         long count = Long.parseLong(scanner.nextLine());
         order.setCount(count);
@@ -524,11 +587,11 @@ public class Store_Manage implements Serializable {
         order.setTotalPrice(totalPrice);
     }
 
-    public void deleteOrderById(){
+    public void deleteOrderByIdz(){
         System.out.println("-------------------------");
         System.out.println("Nhập ID người dùng bạn cần xóa");
         int id = Integer.parseInt(scanner.nextLine());
-        order order = method_oder.deleteById(id);
+        Order order = method_oder.deleteById(id);
         if (order != null){
             System.out.println("Xóa đơn hàng thành công !!!");
         }else {
@@ -551,7 +614,7 @@ public class Store_Manage implements Serializable {
 
     public void displayOrderByUser (User user){
         System.out.println("------------------------");
-        for (order order : method_oder.orderList){
+        for (Order order : method_oder.orderList){
             if (order.getUser().getId() == user.getId()){
                 System.out.println(order);
             }
@@ -607,7 +670,23 @@ public class Store_Manage implements Serializable {
         Store_Manage manage  = new Store_Manage();
 //        manage.addAccount();
 //        manage.addAccount();
+//        manage.addBank();
+        manage.displayBank();
+//        manage.editUser();
+        manage.updateMoney();
+        System.out.println("------------");
+        manage.displayAllUser();
+        System.out.println("------------");
+        manage.displayBank();
+//        manage.editUser();
+
+//        manage.displayAllUser();
 //        manage.displayAllAccount();
+//        manage.displayAllUser();
+
+////        manage.updateMoney();
+//        System.out.println(manage.getUserByAccount("hoang1998").getBank().getMoney());
+//        manage.displayAllUser();
 //        System.out.println("--------------------------");
 //        manage.displayAllUser();
 //        System.out.println("--------------------------");
@@ -617,15 +696,16 @@ public class Store_Manage implements Serializable {
 //        System.out.println("---------------------------------");
 //        manage.displayUserHashMap();
 
-        Account account = new Account("hoang1998","hoang123");
-        User user = new User("Vũ Huy Hoàng","0344550559","Nam Định",account);
-        Brand brand = new Brand("Dell");
-        Product product = new Product("Laptop Dell Gaming G15 5510",25000000,10,"Red",brand);
-
-        System.out.println("Nhập tên TK");
-        String acc ="hoang1998";
-        order order = new order(1,manage.account(acc,user),product,25000000);
-        System.out.println(order);
+//        Account account = new Account("hoang1998","hoang123");
+//        Bank bank = new Bank("0344550559123",25000000,"729467");
+//        User user = new User("Vũ Huy Hoàng","0344550559","Nam Định",account,bank);
+//        Brand brand = new Brand("Dell");
+//        Product product = new Product("Laptop Dell Gaming G15 5510",25000000,10,"Red",brand);
+//
+//        System.out.println("Nhập tên TK");
+//        String acc ="hoang1998";
+//        order order = new order(1,manage.account(acc,user),product,25000000);
+//        System.out.println(order);
 
     }
 
