@@ -13,23 +13,16 @@ public class Order implements Serializable {
    protected String phoneNumber;
    protected String address;
 
-    public Order(long count, User user, Product product, long totalPrice) {
+    public Order() {
+    }
+
+    public Order(long count, Product product, long totalPrice) {
         this.id = ID_Order ++;
         this.count = count;
-        this.user = user;
         this.product = product;
         this.totalPrice = totalPrice;
     }
 
-    public Order(long count, Product product, long totalPrice, String name, String phoneNumber, String address) {
-        this.id = ID_Order ++;
-        this.count = count;
-        this.product = product;
-        this.totalPrice = totalPrice;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-    }
 
     public static int getID_Order() {
         return ID_Order;
@@ -81,11 +74,7 @@ public class Order implements Serializable {
 
     @Override
     public String toString() {
-        return "Đơn hàng{" +
-                ", Tên người dùng: " + user.getFullName() +
-                ", Số điện thoại: " + user.getPhoneNumber() +
-                ", Địa chỉ nhận hàng: " + user.getAddress() +
-                 "\n" +
+        return "Đơn hàng: {" +
                 " Tên sản phẩm: " + product.getName_product() +
                 ", Thương hiệu: " + product.getBrand().getNameBrand() +
                 ", Màu sắc: " + product.getColor() +

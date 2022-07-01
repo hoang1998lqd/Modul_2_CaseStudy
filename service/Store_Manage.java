@@ -14,6 +14,7 @@ public class Store_Manage implements Serializable {
     public final Method_User method_user = new Method_User();
     public final Method_Order method_oder = new Method_Order();
     public final Method_Bank method_bank = new Method_Bank();
+    public final Method_Bill method_bill = new Method_Bill();
 
 
     protected final Scanner scanner = new Scanner(System.in);
@@ -430,8 +431,6 @@ public class Store_Manage implements Serializable {
     }
 
 
-
-
     // Sắp xếp giá tăng dần hoặc giảm dần
 
     public void displayUp(){
@@ -555,12 +554,11 @@ public class Store_Manage implements Serializable {
             int amount = (int) (product.getAmount() - count);
             product.setAmount(amount);
         }while (!checkAmount(product,count));
-        User user = getUserByAccount(account);
         long totalPrice = product.getPrice() * count;
         if (method_oder.orderList.size() > 0){
             Order.ID_Order = method_account.accountList.get(method_oder.orderList.size() - 1).getId() + 1 ;
         }
-        return new Order(count,user,product,totalPrice);
+        return new Order(count,product,totalPrice);
     }
 
     // Tìm User thông qua Account
@@ -623,6 +621,16 @@ public class Store_Manage implements Serializable {
 
 
 
+    // ---------------------------------------Bills---------------------------------
+
+
+    
+
+
+
+
+
+
 
 
     //----------------------- Đăng nhập-------------------------------------------------
@@ -668,44 +676,7 @@ public class Store_Manage implements Serializable {
 
     public static void main(String[] args) {
         Store_Manage manage  = new Store_Manage();
-//        manage.addAccount();
-//        manage.addAccount();
-//        manage.addBank();
-        manage.displayBank();
-//        manage.editUser();
-        manage.updateMoney();
-        System.out.println("------------");
-        manage.displayAllUser();
-        System.out.println("------------");
-        manage.displayBank();
-//        manage.editUser();
 
-//        manage.displayAllUser();
-//        manage.displayAllAccount();
-//        manage.displayAllUser();
-
-////        manage.updateMoney();
-//        System.out.println(manage.getUserByAccount("hoang1998").getBank().getMoney());
-//        manage.displayAllUser();
-//        System.out.println("--------------------------");
-//        manage.displayAllUser();
-//        System.out.println("--------------------------");
-//        System.out.println(manage.userHashMap.get("hoang1998"));
-//        System.out.println("--------------------------------------");
-//        System.out.println(manage.userHashMap);
-//        System.out.println("---------------------------------");
-//        manage.displayUserHashMap();
-
-//        Account account = new Account("hoang1998","hoang123");
-//        Bank bank = new Bank("0344550559123",25000000,"729467");
-//        User user = new User("Vũ Huy Hoàng","0344550559","Nam Định",account,bank);
-//        Brand brand = new Brand("Dell");
-//        Product product = new Product("Laptop Dell Gaming G15 5510",25000000,10,"Red",brand);
-//
-//        System.out.println("Nhập tên TK");
-//        String acc ="hoang1998";
-//        order order = new order(1,manage.account(acc,user),product,25000000);
-//        System.out.println(order);
 
     }
 
