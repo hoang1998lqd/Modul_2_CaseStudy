@@ -2,25 +2,38 @@ package service;
 
 import model.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Store_Manage {
-    protected final Method_Account  method_account = new Method_Account();
-        protected final Method_Brand method_brand = new Method_Brand();
-    protected final Method_Product method_product = new Method_Product();
-    protected final Method_User method_user = new Method_User();
-    protected final Method_Order method_oder = new Method_Order();
-    protected final HashMap<String,User> userHashMap = new HashMap<>();
+public class Store_Manage implements Serializable {
+    public final Method_Account  method_account = new Method_Account();
+    public final Method_Brand method_brand = new Method_Brand();
+    public final Method_Product method_product = new Method_Product();
+    public final Method_User method_user = new Method_User();
+    public final Method_Order method_oder = new Method_Order();
+
+//    public final HashMap<String,User> userHashMap = new HashMap<>();
+
     protected final Scanner scanner = new Scanner(System.in);
 
 
     //----------------------Account-----------------------------
+    // Check Login
+    public boolean checkAccount(ArrayList<Account> list, String account1, String password){
+        for (Account account : list){
+            if (account.getAccount().equals(account1) && account.getPassword().equals(password)){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public boolean checkAdmin(String account1, String password1){
+        return account1.equals("admin") && password1.equals("admin");
+    }
 
 
     //Check Account theo yêu cầu.
@@ -29,12 +42,14 @@ public class Store_Manage {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(account);
         return matcher.find();
+
     }
 
     public Account addAccount(){
         Account account = creatAccount();
         System.out.println("Tạo mới tài khoản thành công !!!");
-        userHashMap.put(account.getAccount(),addUser(account));
+        System.out.println("Nhập thông tin người dùng: ");
+        addUser(account);
         return method_account.add(account);
     }
 
@@ -51,7 +66,7 @@ public class Store_Manage {
             pass = scanner.nextLine();
         }while (!checkAccountByChar(pass));
         if (method_account.accountList.size() > 0){
-            Account.ID_Account = method_account.accountList.get(method_user.getSize()-1).getId() + 1;
+            Account.ID_Account = method_account.accountList.get(method_account.accountList.size()-1).getId() + 1;
 
         }
         return new Account(name,pass);
@@ -327,14 +342,12 @@ public class Store_Manage {
         }
     }
 
-
-
     // Hiển thị theo khoản giá:
     // 15000000 - 20000000;
     // 10000000 - 15000000;
     // > 20000000;
 
-    public void displayByPrice(Scanner scanner ){
+    public void displayByPrice(Scanner scanner, String account ){
         int choice;
         do {
             System.out.println("Mời bạn lựa chọn hiển thị");
@@ -354,14 +367,10 @@ public class Store_Manage {
                     displayProduct3();
                     break;
                 case 4:
-                    addOrder();
-                    break;
+                    addOrder( account);
             }
         }while (choice != 0);
     }
-
-
-
 
     //-----------------------Users---------------------------
 
@@ -435,13 +444,24 @@ public class Store_Manage {
         method_user.displayById(id);
     }
 
+//    // Hiển thị userHashMap
+//        public void displayUserHashMap(){
+//        Iterator<Map.Entry<String, User>> iterator = userHashMap.entrySet().iterator();
+//            System.out.println("Các key and value: ");
+//            while (iterator.hasNext()) {
+//                System.out.println(iterator.next());
+//            }
+//    }
+
+
+
     public void displayAllUser(){
         method_user.displayAll();
     }
 
     // -------------------------Orders-------------------------
-    public order addOrder(){
-        order order = creatOrder();
+    public order addOrder(String account){
+        order order = creatOrder(account);
         System.out.println(order.toString());
         System.out.println("----------------------------------");
         System.out.println("Bạn đã đặt hàng thành công !!! ");
@@ -453,7 +473,7 @@ public class Store_Manage {
     public boolean checkAmount(Product product, long count){
         return count <= product.getAmount() && product.getAmount() != 0;
     }
-    public order creatOrder(){
+    public order creatOrder(String account){
         System.out.println("---------------------------");
         System.out.println("Nhập ID sản phẩm bạn muốn mua: ");
         int idProduct = Integer.parseInt(scanner.nextLine());
@@ -465,15 +485,29 @@ public class Store_Manage {
             int amount = (int) (product.getAmount() - count);
             product.setAmount(amount);
         }while (!checkAmount(product,count));
-        System.out.println("Nhập ID tài khoản: ");
-        int id = Integer.parseInt(scanner.nextLine());
-        User user = method_user.getById(id);
+////        System.out.println("Nhập ID tài khoản: ");
+////        int id = Integer.parseInt(scanner.nextLine());
+//        User user = method_user.getById(id);
+        User user = getUserByAccount(account);
         long totalPrice = product.getPrice() * count;
         if (method_oder.orderList.size() > 0){
             order.ID_Order = method_account.accountList.get(method_oder.orderList.size() - 1).getId() + 1 ;
         }
         return new order(count,user,product,totalPrice);
     }
+
+    // Tìm User thông qua Account
+    public User getUserByAccount(String account){
+        for (User user : method_user.UserList){
+            if (account.equals(user.getAccount().getAccount())){
+                return user;
+            }
+        }
+        return null;
+    }
+
+
+
 
     public void editOrder(){
         System.out.println("-------------------------");
@@ -513,8 +547,93 @@ public class Store_Manage {
         method_oder.displayById(id);
     }
 
+    // Hiển thị thông tin đơn hàng theo người dùng
+
+    public void displayOrderByUser (User user){
+        System.out.println("------------------------");
+        for (order order : method_oder.orderList){
+            if (order.getUser().getId() == user.getId()){
+                System.out.println(order);
+            }
+        }
+    }
+
+
+
+
+
+    //----------------------- Đăng nhập-------------------------------------------------
+    public void login(){
+        String account;
+        String password;
+        int count = 0;
+        do {
+            System.out.println("Tài khoản: ");
+            account = scanner.nextLine();
+            System.out.println("Mật khẩu: ");
+            password = scanner.nextLine();
+            if ( !checkAccount(method_account.accountList, account, password) && !checkAdmin(account,password)){
+                System.out.println("Tài khoản hoặc mật khẩu không chính xác !!!");
+                count ++;
+            }
+            if (checkAccount(method_account.accountList, account, password)) {
+                System.out.println("1.Hiển thị ");
+                System.out.println("2. Đặt hàng");
+               int choice = Integer.parseInt(scanner.nextLine());
+               do {
+                   switch (choice){
+                       case 1:
+                           displayByPrice(scanner,account);
+                           break;
+                       case 2:
+                           addOrder(account);
+                   }
+               }while (choice != 0);
+                count = 1;
+                break;
+            } else if (checkAdmin(account,password)){
+                System.out.println("Đây là dòng lệnh được thực thi dưới quyền Admin !!!");
+                count = 1;
+                break;
+            }
+        }while (count != 3 && !checkAccount(method_account.accountList, account, password) || (account.equals("admin") || password.equals("admin")));
+        if (count == 3){
+            System.out.println("Bạn đã nhập sai 3 lần vui lòng thử lại sau !!!");
+        }
+
+    }
+
     public static void main(String[] args) {
         Store_Manage manage  = new Store_Manage();
+//        manage.addAccount();
+//        manage.addAccount();
+//        manage.displayAllAccount();
+//        System.out.println("--------------------------");
+//        manage.displayAllUser();
+//        System.out.println("--------------------------");
+//        System.out.println(manage.userHashMap.get("hoang1998"));
+//        System.out.println("--------------------------------------");
+//        System.out.println(manage.userHashMap);
+//        System.out.println("---------------------------------");
+//        manage.displayUserHashMap();
+
+        Account account = new Account("hoang1998","hoang123");
+        User user = new User("Vũ Huy Hoàng","0344550559","Nam Định",account);
+        Brand brand = new Brand("Dell");
+        Product product = new Product("Laptop Dell Gaming G15 5510",25000000,10,"Red",brand);
+
+        System.out.println("Nhập tên TK");
+        String acc ="hoang1998";
+        order order = new order(1,manage.account(acc,user),product,25000000);
+        System.out.println(order);
+
+    }
+
+    public User account(String acc, User user){
+        if  (user.getAccount().getAccount().equals(acc)){
+            return user;
+        }
+        return null;
     }
 
 }

@@ -4,9 +4,10 @@ import model.CRUD;
 import model.order;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Method_Order implements CRUD<order> {
+public class Method_Order implements CRUD<order> , Serializable {
 
     public ArrayList<order> orderList ;
 
