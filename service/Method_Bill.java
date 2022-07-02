@@ -92,4 +92,6 @@ public class Method_Bill implements CRUD<Bill> {
             System.out.println(Bill);
         }
     }
+
+
 }

@@ -6,23 +6,35 @@ public class Order implements Serializable {
     public static int ID_Order = 1;
    protected int id;  // ID tự tăng
    protected long count;  // Số lượng mua hàng
-   protected User user;  // Thông tin người dùng
    protected Product product; // Thông tin sản phẩm
    protected long totalPrice;
    protected String name;
    protected String phoneNumber;
    protected String address;
+   protected Account account;
+
+    public Order(Account account) {
+        this.account = account;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 
     public Order() {
     }
 
-    public Order(long count, Product product, long totalPrice) {
+    public Order(long count, Product product, long totalPrice, Account account) {
         this.id = ID_Order ++;
         this.count = count;
         this.product = product;
         this.totalPrice = totalPrice;
+        this.account = account;
     }
-
 
     public static int getID_Order() {
         return ID_Order;
@@ -48,13 +60,7 @@ public class Order implements Serializable {
         this.count = count;
     }
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public Product getProduct() {
         return product;

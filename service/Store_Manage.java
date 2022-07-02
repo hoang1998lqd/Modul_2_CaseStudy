@@ -183,6 +183,39 @@ public class Store_Manage implements Serializable {
         method_bank.displayAll();
     }
 
+    // Khi nhấn vào thanh toán sẽ có 2 hình thức thanh toán là COD và Online
+    // Sau khi nhấn thanh toán sẽ trở ra Menu cửa hàng ban đầu.
+    public void statusOrder(String account){
+       do {
+           System.out.println("Mời bạn chọn hình thức thanh toán: ");
+           System.out.println("1. Thanh toán trực tuyến...");
+           System.out.println("2. Thanh toán trực tiếp...");
+           int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice){
+                case 1:
+                    payOnline(account);
+                    break;
+                case 2:
+                    payCOD(account);
+                    break;
+            }
+       }while (true);
+    }
+
+    // ---------------------------Thanh toán---------------------------------
+    public void payCOD(String account){
+        System.out.println("Bạn đã đặt hàng thành công!!!");
+        System.out.println("Đơn hàng đang được chuyển tới bạn trong vài ngày tới.........");
+        updateBillByCOD(account);
+        displayBillByAccount(account);
+    }
+    public void payOnline(String account){
+        System.out.println("Bạn đã đặt hàng thành công!!!");
+        System.out.println("Đơn hàng đang được chuyển tới bạn trong vài ngày tới.........");
+        updateBillByOnline(account);
+        displayBillByAccount(account);
+    }
+
 
 
     //-----------------------Users---------------------------
@@ -545,6 +578,7 @@ public class Store_Manage implements Serializable {
     public Order creatOrder(String account){
         System.out.println("---------------------------");
         System.out.println("Nhập ID sản phẩm bạn muốn mua: ");
+        Account account1 = method_account.getAccountByString(account);
         int idProduct = Integer.parseInt(scanner.nextLine());
         Product product = method_product.getById(idProduct);
         long count;
@@ -558,8 +592,21 @@ public class Store_Manage implements Serializable {
         if (method_oder.orderList.size() > 0){
             Order.ID_Order = method_account.accountList.get(method_oder.orderList.size() - 1).getId() + 1 ;
         }
-        return new Order(count,product,totalPrice);
+        return new Order(count,product,totalPrice,account1);
     }
+
+    // Tìm Order thông qua Account
+    public ArrayList<Order> getOrderByAccount(String account){
+        ArrayList<Order> orders = new ArrayList<>();
+        for (Order order : method_oder.orderList){
+            if (account.equals(order.getAccount().getAccount())){
+                orders.add(order);
+                return orders;
+            }
+        }
+        return null;
+    }
+
 
     // Tìm User thông qua Account
     public User getUserByAccount(String account){
@@ -569,6 +616,16 @@ public class Store_Manage implements Serializable {
             }
         }
         return null;
+    }
+
+    // Tính tổng tiền theo tài khoản
+    public int totalAllPrice(String account){
+        ArrayList<Order> orders = getOrderByAccount(account);
+        int totalAllPrice = 0;
+        for (Order order : orders) {
+            totalAllPrice += order.getTotalPrice();
+        }
+        return totalAllPrice;
     }
     public void editOrder(){
         System.out.println("-------------------------");
@@ -610,10 +667,10 @@ public class Store_Manage implements Serializable {
 
     // Hiển thị thông tin đơn hàng theo người dùng
 
-    public void displayOrderByUser (User user){
+    public void displayOrderByAccount (String account){
         System.out.println("------------------------");
         for (Order order : method_oder.orderList){
-            if (order.getUser().getId() == user.getId()){
+            if (order.getAccount().getAccount().equals(account)){
                 System.out.println(order);
             }
         }
@@ -623,13 +680,99 @@ public class Store_Manage implements Serializable {
 
     // ---------------------------------------Bills---------------------------------
 
+    public  Bill addBill(String account){
+        Bill bill = creatBill(account);
+        method_bill.add(bill);
+        return bill;
+    }
 
-    
+    public Bill creatBill(String account){
+        Account account1 = method_account.getAccountByString(account);
+        User user = getUserByAccount(account);
+        ArrayList<Order> orders = getOrderByAccount(account);
+        int totalAllPrice = totalAllPrice(account);
+        String paymentStatus = "Chưa thanh toán";
+        String orderStatus = "Đang xác thực";
+        return new Bill(account1,user,orders,totalAllPrice,paymentStatus,orderStatus);
+    }
 
 
+    // Đặt hàng hộ.
+    public Bill creatBillBook(String account){
+        Account account1 = method_account.getAccountByString(account);
+        ArrayList<Order> orders = getOrderByAccount(account);
+        int total = totalAllPrice(account);
+        System.out.println("Họ và tên người nhận: ");
+        String name = scanner.nextLine();
+        System.out.println("Nhập số điện thoại: ");
+        String paymentStatus = "Chưa thanh toán";
+        String orderStatus = "Đang xác thực";
+        String phone;
+        do {
+            System.out.println("Nhập số điện thoại liên hệ: ");
+            phone = scanner.nextLine();
+        }while (!checkPhoneByChar(phone) && !method_user.checkPhoneInList(phone));
+        String address = scanner.nextLine();
+        return new Bill(account1,orders,total,paymentStatus,orderStatus,name,phone,address);
+    }
 
 
+    public Bill getBillByAccount(String account){
+        for (Bill bill : method_bill.BillList){
+            if (bill.getAccount().getAccount().equals(account)){
+                return bill;
+            }
+        }
+        return null;
+    }
+    public void updateBillByCOD(String account){
+        Bill bill = getBillByAccount(account);
+        bill.setOrderStatus("Đang vận chuyển hàng...");
+        bill.setPaymentStatus("Thanh toán khi nhận hàng...");
+    }
 
+    public void updateBillByOnline(String account){
+        Bill bill = getBillByAccount(account);
+        bill.setOrderStatus("Đang vận chuyển hàng...");
+        bill.setPaymentStatus("Đã thanh toán...");
+    }
+
+
+    // Hiển thị hóa đơn qua Account
+    public void displayBillByAccount (String account){
+        Bill bill = getBillByAccount(account);
+        System.out.println(bill);
+    }
+
+    // Hiển thị tất cả hóa đơn
+
+    public void displayAllBill (){
+        method_bill.displayAll();
+    }
+
+    //-------------------- Thanh toán hóa đơn----------------------
+    // Kiểm tra phương thức tính tiền (Phương pháp đệ quy)
+    public void paymentBill(String account){
+        displayBillByAccount(account);
+        User user = getUserByAccount(account);
+        Bill bill = getBillByAccount(account);
+        System.out.println("----------------------------");
+        System.out.println("Mời bạn thanh toán hóa đơn");
+        int money = Integer.parseInt(scanner.nextLine());
+        int moneyInBank = user.getBank().getMoney();
+       if (moneyInBank >= bill.getTotalAllPrice()){
+           if (money == bill.getTotalAllPrice()){
+               payOnline(account);
+           }else {
+               System.out.println("Thanh toán thất bại!!!");
+               paymentBill(account);
+           }
+       }else {
+           System.out.println("Thanh toán thất bạn tài khoản của bạn không đủ để thanh toán");
+           updateMoney();
+           paymentBill(account);
+       }
+    }
 
 
 

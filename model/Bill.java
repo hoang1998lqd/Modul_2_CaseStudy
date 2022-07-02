@@ -12,9 +12,25 @@ public class Bill extends Order implements Serializable {
     protected int totalAllPrice;
     protected String paymentStatus;
     protected String orderStatus;
+    protected String name;
+    protected String phoneNumber;
+    protected String address;
 
-    public Bill(long count, Product product, long totalPrice, User user, ArrayList<Order> order, int totalAllPrice, String paymentStatus, String orderStatus) {
-        super(count, product, totalPrice);
+
+    public Bill( Account account, ArrayList<Order> order, int totalAllPrice, String paymentStatus, String orderStatus, String name, String phoneNumber, String address) {
+        super( account);
+        this.id = ID_Bill ++;
+        this.order = order;
+        this.totalAllPrice = totalAllPrice;
+        this.paymentStatus = paymentStatus;
+        this.orderStatus = orderStatus;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
+
+    public Bill(Account account, User user, ArrayList<Order> order, int totalAllPrice, String paymentStatus, String orderStatus) {
+        super(account);
         this.id = ID_Bill ++;
         this.user = user;
         this.order = order;
@@ -39,16 +55,6 @@ public class Bill extends Order implements Serializable {
     @Override
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Override
-    public User getUser() {
-        return user;
-    }
-
-    @Override
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public ArrayList<Order> getOrder() {
@@ -98,4 +104,21 @@ public class Bill extends Order implements Serializable {
                 ", Trạng thái đơn hàng: '" + orderStatus + '\'' +
                 '}';
     }
+
+    public String stringBook() {
+        return "Hóa đơn: {" +
+                "id=" + id +
+                ", Tên người dùng: " + name +
+                ", Số điện thoại: " + phoneNumber +
+                ", Địa chỉ nhận hàng: " + address +
+                "\n "  +
+                ", order=" + order +
+                "\n "  +
+                ", Thanh toán : " + totalAllPrice + " VNĐ" +
+                ", Trạng thái thanh toán: '" + paymentStatus + '\'' +
+                ", Trạng thái đơn hàng: '" + orderStatus + '\'' +
+                '}';
+    }
+
+
 }

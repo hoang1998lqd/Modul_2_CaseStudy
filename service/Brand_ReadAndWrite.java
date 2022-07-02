@@ -11,9 +11,6 @@ public class Brand_ReadAndWrite implements ReadAndWrite<Brand> {
     public ArrayList<Brand> readFile() {
         File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\data\\Brand.txt");
         try{
-            if (!file.exists()){
-                file.createNewFile();
-            }
             ObjectInputStream read = new ObjectInputStream(new FileInputStream(file));
             ArrayList<Brand> brands = (ArrayList<Brand>) read.readObject();
             read.close();
@@ -29,9 +26,6 @@ public class Brand_ReadAndWrite implements ReadAndWrite<Brand> {
         File file = new File("D:\\Project\\Modul_2\\CaseStudy_Modul_2\\src\\data\\Brand.txt");
 
         try {
-            if (!file.exists()){
-                file.createNewFile();
-            }
             ObjectOutputStream write = new ObjectOutputStream(new FileOutputStream(file));
             write.writeObject(list);
             write.close();

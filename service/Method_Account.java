@@ -88,6 +88,14 @@ public class Method_Account implements CRUD<Account> {
             }
         }
     }
+    public Account getAccountByString(String account){
+        for (Account account1 : accountList){
+            if (account.equals(account1.getAccount())){
+                return account1;
+            }
+        }
+        return null;
+    }
 
     @Override
     public void displayAll() {

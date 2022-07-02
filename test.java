@@ -13,7 +13,21 @@ public class test {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Store_Manage store_manage = new Store_Manage();
-        store_manage.displayAllProduct();
+        test test = new test();
+        do {
+            System.out.println("1.Hello");
+            System.out.println("2.Bye");
+            System.out.println("Mời nhập lựa chọn:");
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice){
+                case 1:
+                    System.out.println("Hello");
+                    break;
+                case 2:
+                    System.out.println("Bye");
+                    break;
+            }
+        }while (true);
 //        Brand brand = new Brand("Dell");
 //        Account account = new Account("hoang1998","hoang123");
 //        Account account1 = new Account("thao130694","hoang123");
@@ -75,6 +89,30 @@ public class test {
             System.out.println("Loi dinh dang ngay thang.!");
         }
         return ns;
+    }
+
+    public void pay(Scanner scanner){
+        Bank bank = new Bank("123456",200,"1456");
+        int a = bank.getMoney();
+        System.out.println("Nhập số vào đây");
+        int b =Integer.parseInt(scanner.nextLine());
+        if (a >= 300){
+            if (b == 300){
+                System.out.println("Ok");
+            }else {
+                System.out.println("Thất bại");
+                pay(scanner);
+            }
+        }else {
+            System.out.println("Thất bại con mẹ nó rồi");
+            System.out.println("-------------------");
+            System.out.println("Nạp thêm");
+            int c = Integer.parseInt(scanner.nextLine());
+            int e = a + c;
+            bank.setMoney(e);
+            pay(scanner);
+        }
+
     }
 
 
