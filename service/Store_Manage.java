@@ -535,14 +535,13 @@ public class Store_Manage implements Serializable {
     // 10000000 - 15000000;
     // > 20000000;
 
-    public void displayByPrice(Scanner scanner, String account ){
+    public void displayByPrice(Scanner scanner){
         int choice;
         do {
             System.out.println("Mời bạn lựa chọn hiển thị");
             System.out.println("1. Từ 10,000,000 - 15,000,000.");
             System.out.println("2. Từ 15,000,000 - 20,000,000.");
             System.out.println("3. Lớn hơn 20,000,000.");
-            System.out.println("4. Đặt hàng.");
             choice = Integer.parseInt(scanner.nextLine());
             switch (choice){
                 case 1:
@@ -554,8 +553,6 @@ public class Store_Manage implements Serializable {
                 case 3:
                     displayProduct3();
                     break;
-                case 4:
-                    addOrder( account);
             }
         }while (choice != 0);
     }
@@ -585,8 +582,6 @@ public class Store_Manage implements Serializable {
         do {
             System.out.println("Nhập số lượng cần mua: ");
             count = Long.parseLong(scanner.nextLine());
-            int amount = (int) (product.getAmount() - count);
-            product.setAmount(amount);
         }while (!checkAmount(product,count));
         long totalPrice = product.getPrice() * count;
         if (method_oder.orderList.size() > 0){
@@ -750,6 +745,21 @@ public class Store_Manage implements Serializable {
         method_bill.displayAll();
     }
 
+    // Xác nhận nhận hàng thành công
+    public void confirmOrder(String account){
+        Bill bill = getBillByAccount(account);
+        bill.setOrderStatus("Đã nhận hàng thành công...");
+        bill.setPaymentStatus("Đã thanh toán...");
+        for (Order order : bill.getOrder()){
+           int amount = order.getProduct().getAmount();
+           int count = (int)order.getCount();
+           int setAmount = amount - count;
+           order.getProduct().setAmount(setAmount);
+           method_product.update(order.getProduct());
+//           bill.getOrder().remove(order);
+        }
+    }
+
     //-------------------- Thanh toán hóa đơn----------------------
     // Kiểm tra phương thức tính tiền (Phương pháp đệ quy)
     public void paymentBill(String account){
@@ -797,7 +807,7 @@ public class Store_Manage implements Serializable {
                do {
                    switch (choice){
                        case 1:
-                           displayByPrice(scanner,account);
+                           displayByPrice(scanner);
                            break;
                        case 2:
                            addOrder(account);
