@@ -12,9 +12,21 @@ public class RunByAdmin {
     }
     public void menuAdmin(){
         try {
-            int choice = choiceAdmin();
+            int choice ;
             do {
-                switch (choice){
+                System.out.println("---------- QUYỀN ADMIN ----------");
+                System.out.println("1. Thêm sản phẩm");
+                System.out.println("2. Sản phẩm"); // CRUD Brand và Product
+                System.out.println("3. Xóa sản phẩm");
+                System.out.println("4. Hiển thị sản phẩm"); // tạo lựa chọn theo cách hiển thị
+                System.out.println("5. Thông tin người dùng");
+                System.out.println("6. Thông tin đơn hàng (Bill)");
+//        System.out.println("7. Nhân viên");
+//        System.out.println("8. Tổng doanh thu");
+                System.out.println("0. Đăng xuất...");
+                System.out.println("Mời bạn nhập lựa chọn !!!");
+                choice = Integer.parseInt(scanner.nextLine());
+                switch (choice) {
                     case 1:
                         manage.addProduct();
                         break;
@@ -36,31 +48,13 @@ public class RunByAdmin {
                     case 0:
                         login.login();
                         break;
-
-
                 }
-
-            }while (true);
+            } while (true);
         }catch (InputMismatchException e){
             System.out.println("---------------------------");
             System.out.println("Bạn đã nhập sai dữ liệu. Vui lòng nhập lại...");
             menuAdmin();
         }
-    }
-
-    private int choiceAdmin(){
-        System.out.println("---------- QUYỀN ADMIN ----------");
-        System.out.println("1. Thêm sản phẩm");
-        System.out.println("2. Sản phẩm"); // CRUD Brand và Product
-        System.out.println("3. Xóa sản phẩm");
-        System.out.println("4. Hiển thị sản phẩm"); // tạo lựa chọn theo cách hiển thị
-        System.out.println("5. Thông tin người dùng");
-        System.out.println("6. Thông tin đơn hàng (Bill)");
-//        System.out.println("7. Nhân viên");
-//        System.out.println("8. Tổng doanh thu");
-        System.out.println("0. Đăng xuất...");
-        System.out.println("Mời bạn nhập lựa chọn !!!");
-        return Integer.parseInt(scanner.nextLine());
     }
 
     private void choiceProduct(){
@@ -108,7 +102,6 @@ public class RunByAdmin {
                     break;
             }
         }while (true);
-
     }
 
     public void userByAdmin(){
