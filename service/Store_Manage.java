@@ -279,8 +279,10 @@ public class Store_Manage implements Serializable {
         System.out.println("-------------------------");
         System.out.println("Nhập ID người dùng bạn cần xóa");
         int id = Integer.parseInt(scanner.nextLine());
-        Brand brand = method_brand.deleteById(id);
-        if (brand != null){
+        User user = method_user.deleteById(id);
+        Bank bank = method_bank.deleteById(id);
+        Account account = method_account.deleteById(id);
+        if (user != null && bank !=null && account != null){
             System.out.println("Xóa người dùng thành công !!!");
         }else {
             System.out.println("Xóa người dùng thất bại do không tìm thấy ID theo yêu cầu !!!");
@@ -500,33 +502,44 @@ public class Store_Manage implements Serializable {
     }
 
     public void displayProduct1(){
+        boolean flag = true;
         for (Product product : method_product.productList){
             if (product.getPrice() > 15000000 && product.getPrice() < 20000000 ){
+                flag = true;
                 System.out.println(product);
             }
-            else {
-                System.out.println("Hiện không có sản phẩm nào như yêu cầu của bạn !!! ");
-            }
+        }
+        if (!flag){
+            System.out.println("Không tìm thấy sản phẩm theo yêu cầu !!!");
         }
     }
 
     public void displayProduct2(){
+        boolean flag = false;
         for (Product product : method_product.productList){
             if (product.getPrice() > 10000000 && product.getPrice() < 15000000 ){
+                flag = true;
                 System.out.println(product);
-            } else {
-                System.out.println("Hiện không có sản phẩm nào như yêu cầu của bạn !!! ");
             }
+
         }
+        if (!flag){
+            System.out.println("Không tìm thấy sản phẩm theo yêu cầu !!!");
+        }
+
     }
 
     public void displayProduct3(){
+        boolean flag = false;
         for (Product product : method_product.productList){
             if (product.getPrice() > 20000000 ){
+                flag = true;
                 System.out.println(product);
-            } else {
-                System.out.println("Hiện không có sản phẩm nào như yêu cầu của bạn !!! ");
             }
+        }
+        if (!flag){
+            System.out.println("Hiện không có sản phẩm nào như yêu cầu của bạn !!! ");
+
         }
     }
 
