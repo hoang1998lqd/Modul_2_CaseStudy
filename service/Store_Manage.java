@@ -126,7 +126,8 @@ public class Store_Manage implements Serializable {
     public Bank addBank(){
         Bank bank = creatBank();
         System.out.println("Liên kết tài khoản thành công !!!");
-        return method_bank.add(bank);
+         method_bank.add(bank);
+         return bank;
     }
 
     public Bank creatBank(){
@@ -288,6 +289,16 @@ public class Store_Manage implements Serializable {
             System.out.println("Xóa người dùng thất bại do không tìm thấy ID theo yêu cầu !!!");
         }
     }
+
+    public void displayUserByAccount(String account){
+        System.out.println("-------------------------");
+            for (User user : method_user.UserList){
+               if  (user.getAccount().getAccount().equals(account)) {
+                   System.out.println(user);
+               }
+            }
+
+        }
 
     public void displayUserById(){
         System.out.println("-------------------------");
@@ -487,7 +498,7 @@ public class Store_Manage implements Serializable {
         Brand brand;
         do {
             System.out.println("-------------------------");
-            System.out.println("Nhập thương hiệu cho sản phẩm: ");
+            System.out.println("Nhập thương hiệu cần hiển thị: ");
             int choice =Integer.parseInt(scanner.nextLine());
             if (method_brand.getById(choice) == null){
                 System.out.println("Lựa chọn không đúng !!");
@@ -502,15 +513,17 @@ public class Store_Manage implements Serializable {
     }
 
     public void displayProduct1(){
-        boolean flag = true;
+        boolean flag = false;
         for (Product product : method_product.productList){
             if (product.getPrice() > 15000000 && product.getPrice() < 20000000 ){
                 flag = true;
                 System.out.println(product);
+                System.out.println("------------------------------------------");
             }
         }
         if (!flag){
             System.out.println("Không tìm thấy sản phẩm theo yêu cầu !!!");
+            System.out.println("------------------------------------------");
         }
     }
 
@@ -520,11 +533,13 @@ public class Store_Manage implements Serializable {
             if (product.getPrice() > 10000000 && product.getPrice() < 15000000 ){
                 flag = true;
                 System.out.println(product);
+                System.out.println("------------------------------------------");
             }
 
         }
         if (!flag){
             System.out.println("Không tìm thấy sản phẩm theo yêu cầu !!!");
+            System.out.println("------------------------------------------");
         }
 
     }
@@ -535,10 +550,12 @@ public class Store_Manage implements Serializable {
             if (product.getPrice() > 20000000 ){
                 flag = true;
                 System.out.println(product);
+                System.out.println("------------------------------------------");
             }
         }
         if (!flag){
             System.out.println("Hiện không có sản phẩm nào như yêu cầu của bạn !!! ");
+            System.out.println("------------------------------------------");
 
         }
     }
@@ -555,6 +572,8 @@ public class Store_Manage implements Serializable {
             System.out.println("1. Từ 10,000,000 - 15,000,000.");
             System.out.println("2. Từ 15,000,000 - 20,000,000.");
             System.out.println("3. Lớn hơn 20,000,000.");
+            System.out.println("4. Sắp xếp giảm dần.");
+            System.out.println("5. Sắp xếp tăng dần.");
             choice = Integer.parseInt(scanner.nextLine());
             switch (choice){
                 case 1:
@@ -565,6 +584,12 @@ public class Store_Manage implements Serializable {
                     break;
                 case 3:
                     displayProduct3();
+                    break;
+                case 4:
+                    displayUp();
+                    break;
+                case 5:
+                    displayDown();
                     break;
             }
         }while (choice != 0);
@@ -577,6 +602,7 @@ public class Store_Manage implements Serializable {
         System.out.println(order.toString());
         System.out.println("----------------------------------");
         System.out.println("Bạn đã đặt hàng thành công !!! ");
+        System.out.println("----------------------------------");
         method_oder.add(order);
         return order;
     }
@@ -587,8 +613,8 @@ public class Store_Manage implements Serializable {
     }
     public Order creatOrder(String account){
         System.out.println("---------------------------");
-        System.out.println("Nhập ID sản phẩm bạn muốn mua: ");
         Account account1 = method_account.getAccountByString(account);
+        System.out.println("Nhập ID sản phẩm bạn muốn mua: ");
         int idProduct = Integer.parseInt(scanner.nextLine());
         Product product = method_product.getById(idProduct);
         long count;
@@ -704,7 +730,6 @@ public class Store_Manage implements Serializable {
         return new Bill(account1,user,orders,totalAllPrice,paymentStatus,orderStatus);
     }
 
-
     // Đặt hàng hộ.
     public Bill creatBillBook(String account){
         Account account1 = method_account.getAccountByString(account);
@@ -713,16 +738,24 @@ public class Store_Manage implements Serializable {
         System.out.println("Họ và tên người nhận: ");
         String name = scanner.nextLine();
         System.out.println("Nhập số điện thoại: ");
-        String paymentStatus = "Chưa thanh toán";
-        String orderStatus = "Đang xác thực";
         String phone;
         do {
             System.out.println("Nhập số điện thoại liên hệ: ");
             phone = scanner.nextLine();
         }while (!checkPhoneByChar(phone) && !method_user.checkPhoneInList(phone));
+        System.out.println("Nhập địa chỉ nhận hàng.");
         String address = scanner.nextLine();
+        String paymentStatus = "Chưa thanh toán";
+        String orderStatus = "Đang xác thực";
         return new Bill(account1,orders,total,paymentStatus,orderStatus,name,phone,address);
     }
+
+    public  Bill addBillBook(String account){
+        Bill bill = creatBillBook(account);
+        method_bill.add(bill);
+        return bill;
+    }
+
 
 
     public Bill getBillByAccount(String account){
@@ -737,12 +770,30 @@ public class Store_Manage implements Serializable {
         Bill bill = getBillByAccount(account);
         bill.setOrderStatus("Đang vận chuyển hàng...");
         bill.setPaymentStatus("Thanh toán khi nhận hàng...");
+        for (Order order : bill.getOrder()){
+            int amount = order.getProduct().getAmount();
+            int count = (int)order.getCount();
+            int setAmount = amount - count;
+            order.getProduct().setAmount(setAmount);
+            method_product.update(order.getProduct());
+//           bill.getOrder().remove(order);
+        }
     }
 
     public void updateBillByOnline(String account){
         Bill bill = getBillByAccount(account);
+        int money = bill.getUser().getBank().getMoney() - bill.getTotalAllPrice();
+        bill.getUser().getBank().setMoney(money);
         bill.setOrderStatus("Đang vận chuyển hàng...");
         bill.setPaymentStatus("Đã thanh toán...");
+        for (Order order : bill.getOrder()){
+            int amount = order.getProduct().getAmount();
+            int count = (int)order.getCount();
+            int setAmount = amount - count;
+            order.getProduct().setAmount(setAmount);
+            method_product.update(order.getProduct());
+//           bill.getOrder().remove(order);
+        }
     }
 
 
@@ -760,17 +811,11 @@ public class Store_Manage implements Serializable {
 
     // Xác nhận nhận hàng thành công
     public void confirmOrder(String account){
+        System.out.println("-------------------------------------");
+        System.out.println("Cảm ơn bạn đã mua hàng ở cửa hàng chúng tôi !!!");
         Bill bill = getBillByAccount(account);
         bill.setOrderStatus("Đã nhận hàng thành công...");
         bill.setPaymentStatus("Đã thanh toán...");
-        for (Order order : bill.getOrder()){
-           int amount = order.getProduct().getAmount();
-           int count = (int)order.getCount();
-           int setAmount = amount - count;
-           order.getProduct().setAmount(setAmount);
-           method_product.update(order.getProduct());
-//           bill.getOrder().remove(order);
-        }
     }
 
     //-------------------- Thanh toán hóa đơn----------------------
@@ -781,6 +826,8 @@ public class Store_Manage implements Serializable {
         Bill bill = getBillByAccount(account);
         System.out.println("----------------------------");
         System.out.println("Mời bạn thanh toán hóa đơn");
+        System.out.println("-----------------------------");
+        System.out.println("Nhập số tiền cần thanh toán: ");
         int money = Integer.parseInt(scanner.nextLine());
         int moneyInBank = user.getBank().getMoney();
        if (moneyInBank >= bill.getTotalAllPrice()){
@@ -795,6 +842,15 @@ public class Store_Manage implements Serializable {
            updateMoney();
            paymentBill(account);
        }
+    }
+
+    public void turnOver(){
+        int money = 0;
+        for (Bill bill : method_bill.BillList){
+            money += bill.getTotalAllPrice();
+        }
+        System.out.println("Doanh thu của cửa hàng là: " + money + " VNĐ");
+
     }
 
 

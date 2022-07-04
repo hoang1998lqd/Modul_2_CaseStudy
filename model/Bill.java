@@ -69,6 +69,14 @@ public class Bill extends Order implements Serializable {
         return totalAllPrice;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public void setTotalAllPrice(int totalAllPrice) {
         this.totalAllPrice = totalAllPrice;
     }

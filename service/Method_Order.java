@@ -1,16 +1,19 @@
 package service;
 
-import model.Account;
-import model.CRUD;
-import model.Order;
+import model.*;
 
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Method_Order implements CRUD<Order> , Serializable {
+    public Orders_ReadAndWrite readAndWrite = new Orders_ReadAndWrite();
+    public ArrayList<Order> orderList;
 
-    public ArrayList<Order> orderList ;
+    public Method_Order() {
+        orderList = readAndWrite.readFile();
+    }
 
     public ArrayList<Order> getOrderList() {
         return orderList;
@@ -36,6 +39,11 @@ public class Method_Order implements CRUD<Order> , Serializable {
     @Override
     public Order add(Order order) {
         orderList.add(order);
+        try{
+            readAndWrite.writeFile(orderList);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
         return order;
     }
 
@@ -46,6 +54,11 @@ public class Method_Order implements CRUD<Order> , Serializable {
                 orderList.set(i,order);
             }
         }
+        try{
+            readAndWrite.writeFile(orderList);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -54,6 +67,11 @@ public class Method_Order implements CRUD<Order> , Serializable {
             if (id == order.getId()){
                 orderList.remove(order);
                 return order;
+            }
+            try{
+                readAndWrite.writeFile(orderList);
+            }catch (IOException e){
+                e.printStackTrace();
             }
         }
         return null;

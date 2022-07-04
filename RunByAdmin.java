@@ -21,6 +21,7 @@ public class RunByAdmin {
                 System.out.println("4. Hiển thị sản phẩm"); // tạo lựa chọn theo cách hiển thị
                 System.out.println("5. Thông tin người dùng");
                 System.out.println("6. Thông tin đơn hàng (Bill)");
+                System.out.println("7. Tổng doanh thu");
 //        System.out.println("7. Nhân viên");
 //        System.out.println("8. Tổng doanh thu");
                 System.out.println("0. Đăng xuất...");
@@ -45,6 +46,9 @@ public class RunByAdmin {
                     case 6:
                         billByAdmin();
                         break;
+                    case 7:
+                        manage.turnOver();
+                        break;
                     case 0:
                         login.login();
                         break;
@@ -62,7 +66,8 @@ public class RunByAdmin {
       do {
           System.out.println("----------Product----------");
           System.out.println("1. Sửa sản phẩm");
-          System.out.println("2. Sửa thương hiệu");
+          System.out.println("2. Xóa sản phẩm");
+          System.out.println("3. Sửa thương hiệu");
           System.out.println("0. Trở lại Menu");
           System.out.println("Mời bạn nhập lựa chọn !!!");
           choice = Integer.parseInt(scanner.nextLine());
@@ -71,6 +76,9 @@ public class RunByAdmin {
                   manage.editProduct();
                   break;
               case 2:
+                  manage.deleteByIdProduct();
+                  break;
+              case 3:
                   manage.editBrand();
                   break;
               case 0:

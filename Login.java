@@ -6,6 +6,8 @@ public class Login {
 
 
     public static void main(String[] args) {
+        Store_Manage manage = new Store_Manage();
+//        manage.addAccount();
         Login login = new Login();
         login.login();
     }
@@ -13,6 +15,7 @@ public class Login {
         Store_Manage manage = new Store_Manage();
         Scanner scanner = new Scanner(System.in);
         RunByAdmin admin = new RunByAdmin();
+        RunByUser user = new RunByUser();
         String account;
         String password;
         int count = 0;
@@ -27,11 +30,10 @@ public class Login {
                 count ++;
             }
             if (manage.checkAccount(manage.method_account.accountList, account, password)) {
-                System.out.println("Đây là dòng lệnh được thực thi dưới quyền người dùng");
+                user.menuUser(account);
                 count = 1;
                 break;
             } else if (manage.checkAdmin(account,password)){
-                System.out.println("Đây là dòng lệnh được thực thi dưới quyền Admin !!!");
                 admin.menuAdmin();
                 count = 1;
                 break;

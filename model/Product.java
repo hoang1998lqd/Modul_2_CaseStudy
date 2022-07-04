@@ -29,7 +29,7 @@ public class Product implements Serializable {
         return "Product{" +
                 "ID=" + id +
                 ", Tên sản phẩm: '" + name_product + '\'' +
-                ", Giá tiền: " + price +
+                ", Giá tiền: " + price +  " " + "VNĐ" +
                 ", Số lượng: " + amount +
                 ", Màu sắc: '" + color + '\'' +
                 ", Thương hiệu: " + brand.getNameBrand() +

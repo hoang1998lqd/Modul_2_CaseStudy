@@ -88,6 +88,8 @@ public class Method_User implements CRUD<User> {
         }
     }
 
+
+
     @Override
     public void displayAll() {
         for (User User : UserList){
