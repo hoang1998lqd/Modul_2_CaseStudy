@@ -63,16 +63,17 @@ public class Method_Order implements CRUD<Order> , Serializable {
 
     @Override
     public Order deleteById(int id) {
-        for (Order order : orderList){
-            if (id == order.getId()){
-                orderList.remove(order);
-                return order;
+        int index = 0;
+        for (int i = 0; i < orderList.size(); i++) {
+            if (id == orderList.get(i).getId()){
+                index = i;
             }
-            try{
-                readAndWrite.writeFile(orderList);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
+        }
+        orderList.remove(index);
+        try {
+            readAndWrite.writeFile(orderList);
+        }catch (IOException e){
+            e.printStackTrace();
         }
         return null;
     }

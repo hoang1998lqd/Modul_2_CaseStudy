@@ -25,11 +25,9 @@ public class RunByUser {
                 System.out.println("3. Giỏ hàng.");
                 System.out.println("4. Điền thông tin đơn hàng.");
                 System.out.println("5. Thanh toán đơn hàng.");
-                System.out.println("6. Thông tin đơn hàng."); // tạo lựa chọn theo cách hiển thị
+                System.out.println("6. Thông tin đơn hàng.");
                 System.out.println("7. Xác nhận đơn hàng.");
                 System.out.println("8. Thông tin người dùng (Bill)");
-//        System.out.println("7. Nhân viên");
-//        System.out.println("8. Tổng doanh thu");
                 System.out.println("0. Đăng xuất...");
                 System.out.println("Mời bạn nhập lựa chọn !!!");
                 choice = Integer.parseInt(scanner.nextLine());
@@ -89,7 +87,6 @@ public class RunByUser {
                 case 0:
                     menuUser(account);
                     break;
-
             }
         }while (true);
     }
@@ -136,7 +133,7 @@ public class RunByUser {
                     manage.displayOrderByAccount(account);
                     break;
                 case 2:
-                    manage.displayByPrice(scanner);
+                    bill(account);
                     break;
                 case 3:
                     manage.displayByBrad(scanner);

@@ -5,6 +5,7 @@ import model.CRUD;
 import model.Product;
 import model.ReadAndWrite;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -61,15 +62,16 @@ public class Method_Product implements CRUD<Product> {
 
     @Override
     public Product deleteById(int id) {
-        for (Product product : productList){
-            if (id == product.getId()){
-                productList.remove(product);
-                return product;
+        int index = 0;
+        for (int i = 0; i < productList.size(); i++) {
+            if (id == productList.get(i).getId()){
+                index = i;
             }
         }
+        productList.remove(index);
         try {
             readAndWrite.writeFile(productList);
-        }catch (Exception e){
+        }catch (IOException e){
             e.printStackTrace();
         }
         return null;

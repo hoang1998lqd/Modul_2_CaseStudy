@@ -60,12 +60,13 @@ public class Method_Brand implements CRUD<Brand>  {
 
     @Override
     public Brand deleteById(int id) {
-        for (Brand brand : brandList) {
-            if (brand.getId() == id) {
-                brandList.remove(brand);
-                return brand;
+        int index = 0;
+        for (int i = 0; i < brandList.size(); i++) {
+            if (id == brandList.get(i).getId()){
+                index = i;
             }
         }
+        brandList.remove(index);
         try {
             readAndWrite.writeFile(brandList);
         }catch (IOException e){

@@ -15,6 +15,7 @@ public class Store_Manage implements Serializable {
     public final Method_Order method_oder = new Method_Order();
     public final Method_Bank method_bank = new Method_Bank();
     public final Method_Bill method_bill = new Method_Bill();
+    public final Orders_ReadAndWrite readAndWrite = new Orders_ReadAndWrite();
 
 
     protected final Scanner scanner = new Scanner(System.in);
@@ -726,6 +727,9 @@ public class Store_Manage implements Serializable {
         User user = getUserByAccount(account);
         ArrayList<Order> orders = getOrderByAccount(account);
         int totalAllPrice = totalAllPrice(account);
+        if (method_bill.BillList.size() > 0){
+            Bill.ID_Bill = method_bill.BillList.get(method_bill.BillList.size()-1).getId() + 1 ;
+        }
         String paymentStatus = "Chưa thanh toán";
         String orderStatus = "Đang xác thực";
         return new Bill(account1,user,orders,totalAllPrice,paymentStatus,orderStatus);
@@ -777,7 +781,6 @@ public class Store_Manage implements Serializable {
             int setAmount = amount - count;
             order.getProduct().setAmount(setAmount);
             method_product.update(order.getProduct());
-//           bill.getOrder().remove(order);
         }
     }
 
@@ -840,9 +843,15 @@ public class Store_Manage implements Serializable {
         int money = Integer.parseInt(scanner.nextLine());
         int moneyInBank = user.getBank().getMoney();
        if (moneyInBank >= bill.getTotalAllPrice()){
-           if (money == bill.getTotalAllPrice()){
+           if (money == bill.getTotalAllPrice()) {
                payOnline(account);
-           }else {
+               method_oder.orderList.removeAll(getOrderByAccount(account));
+               try{
+                   readAndWrite.writeFile(method_oder.orderList);
+               }catch (Exception e){
+                   e.printStackTrace();
+               }
+           } else {
                System.out.println("Thanh toán thất bại!!!");
                paymentBill(account);
            }

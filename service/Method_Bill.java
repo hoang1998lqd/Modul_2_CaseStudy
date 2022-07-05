@@ -63,12 +63,13 @@ public class Method_Bill implements CRUD<Bill> {
 
     @Override
     public Bill deleteById(int id) {
-        for (Bill Bill : BillList) {
-            if (Bill.getId() == id) {
-                BillList.remove(Bill);
-                return Bill;
+        int index = 0;
+        for (int i = 0; i < BillList.size(); i++) {
+            if (id == BillList.get(i).getId()){
+                index = i;
             }
         }
+        BillList.remove(index);
         try {
             readAndWrite.writeFile(BillList);
         }catch (IOException e){
