@@ -65,12 +65,14 @@ public class Method_User implements CRUD<User> {
 
     @Override
     public User deleteById(int id) {
-        for (User User : UserList){
-            if (id == User.getId()){
-                UserList.remove(User);
-                return User;
+
+        int index = 0;
+        for (int i = 0; i < UserList.size(); i++) {
+            if (id == UserList.get(i).getId()){
+                index = i;
             }
         }
+        UserList.remove(index);
         try{
             readAndWrite.writeFile(UserList);
         }catch (IOException e){

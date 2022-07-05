@@ -60,12 +60,13 @@ public class Method_Bank implements CRUD<Bank> {
 
     @Override
     public Bank deleteById(int id) {
-        for (Bank bank : bankList){
-            if (id == bank.getId()){
-                bankList.remove(bank);
-                return bank;
+        int index = 0;
+        for (int i = 0; i < bankList.size(); i++) {
+            if (id == bankList.get(i).getId()){
+                index = i;
             }
         }
+        bankList.remove(index);
         try {
             readAndWrite.writeFile(bankList);
         }catch (IOException e){

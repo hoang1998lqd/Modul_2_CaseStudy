@@ -155,6 +155,7 @@ public class Store_Manage implements Serializable {
         System.out.println("Nhập ID tài khoản: ");
         int id = Integer.parseInt(scanner.nextLine());
         User user = method_user.getById(id);
+        Bank bank = method_bank.getById(id);
         String code;
         int count = 0;
         do {
@@ -169,7 +170,8 @@ public class Store_Manage implements Serializable {
                     moneyUpdate = Integer.parseInt(money) + user.getBank().getMoney();
                 }while (checkAccountNumber(money));
                 user.getBank().setMoney(moneyUpdate);
-
+                bank.setMoney(moneyUpdate);
+                method_bank.update(bank);
                 method_user.update(user);
                 break;
             }else {
@@ -624,7 +626,7 @@ public class Store_Manage implements Serializable {
         }while (!checkAmount(product,count));
         long totalPrice = product.getPrice() * count;
         if (method_oder.orderList.size() > 0){
-            Order.ID_Order = method_account.accountList.get(method_oder.orderList.size() - 1).getId() + 1 ;
+            Order.ID_Order = method_oder.orderList.get(method_oder.orderList.size() - 1).getId() + 1 ;
         }
         return new Order(count,product,totalPrice,account1);
     }
@@ -635,10 +637,9 @@ public class Store_Manage implements Serializable {
         for (Order order : method_oder.orderList){
             if (account.equals(order.getAccount().getAccount())){
                 orders.add(order);
-                return orders;
             }
         }
-        return null;
+        return orders;
     }
 
 
@@ -784,6 +785,8 @@ public class Store_Manage implements Serializable {
         Bill bill = getBillByAccount(account);
         int money = bill.getUser().getBank().getMoney() - bill.getTotalAllPrice();
         bill.getUser().getBank().setMoney(money);
+        Bank bank = bill.getUser().getBank();
+        bank.setMoney(money);
         bill.setOrderStatus("Đang vận chuyển hàng...");
         bill.setPaymentStatus("Đã thanh toán...");
         for (Order order : bill.getOrder()){
@@ -808,6 +811,12 @@ public class Store_Manage implements Serializable {
     public void displayAllBill (){
         method_bill.displayAll();
     }
+
+
+//    public Bill totalMoney(String account){
+//
+//
+//    }
 
     // Xác nhận nhận hàng thành công
     public void confirmOrder(String account){

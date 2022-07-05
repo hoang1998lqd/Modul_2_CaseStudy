@@ -66,12 +66,13 @@ public class Method_Account implements CRUD<Account> {
 
     @Override
     public Account deleteById(int id) {
-        for (Account account : accountList){
-            if (id == account.getId()){
-                accountList.remove(account);
-                return account;
+        int index = 0;
+        for (int i = 0; i < accountList.size(); i++) {
+            if (id == accountList.get(i).getId()){
+                index = i;
             }
         }
+        accountList.remove(index);
         try {
             readAndWrite.writeFile(accountList);
         }catch (IOException e){
