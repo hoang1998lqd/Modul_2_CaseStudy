@@ -15,7 +15,7 @@ public class RunByUser {
 
     // Lỗi phần tính toán list order
 
-    public void menuUser(String account){
+    public void menuUser(String account) {
         try {
             int choice;
             do {
@@ -33,7 +33,7 @@ public class RunByUser {
                 choice = Integer.parseInt(scanner.nextLine());
                 switch (choice) {
                     case 1:
-                       choiceProduct(account);
+                        choiceProduct(account);
                         break;
                     case 2:
                         manage.addOrder(account);
@@ -45,12 +45,12 @@ public class RunByUser {
                         choiceOrder(account);
                         break;
                     case 5:
-                       bill(account);
+                        bill(account);
                         break;
                     case 6:
-                        manage.displayBillByAccount(account);
+                        infoBill(account);
                         break;
-                        case 7:
+                    case 7:
                         manage.confirmOrder(account);
                         break;
                     case 8:
@@ -61,14 +61,14 @@ public class RunByUser {
                         break;
                 }
             } while (true);
-        }catch (InputMismatchException e){
+        } catch (InputMismatchException e) {
             System.out.println("------------------------------------------");
             System.out.println("Bạn đã nhập sai dữ liệu. Vui lòng nhập lại...");
             menuUser(account);
         }
     }
 
-    public void choiceOrder(String account){
+    public void choiceOrder(String account) {
         int choice;
         do {
             System.out.println("---------- Bills Product ----------");
@@ -77,7 +77,7 @@ public class RunByUser {
             System.out.println("0. Trở lại Menu");
             System.out.println("Mời bạn nhập lựa chọn !!!");
             choice = Integer.parseInt(scanner.nextLine());
-            switch (choice){
+            switch (choice) {
                 case 1:
                     manage.addBill(account);
                     break;
@@ -88,9 +88,10 @@ public class RunByUser {
                     menuUser(account);
                     break;
             }
-        }while (true);
+        } while (true);
     }
-    private void choiceProduct(String account){
+
+    private void choiceProduct(String account) {
         int choice;
         do {
             System.out.println("----------Product----------");
@@ -100,7 +101,7 @@ public class RunByUser {
             System.out.println("0. Trở lại Menu");
             System.out.println("Mời bạn nhập lựa chọn !!!");
             choice = Integer.parseInt(scanner.nextLine());
-            switch (choice){
+            switch (choice) {
                 case 1:
                     manage.displayAllProduct();
                     break;
@@ -114,12 +115,12 @@ public class RunByUser {
                     menuUser(account);
                     break;
             }
-        }while (true);
+        } while (true);
 
     }
 
 
-    private void cart (String account){
+    private void cart(String account) {
         int choice;
         do {
             System.out.println("---------- Cart ----------");
@@ -128,7 +129,7 @@ public class RunByUser {
             System.out.println("0. Trở lại Menu");
             System.out.println("Mời bạn nhập lựa chọn !!!");
             choice = Integer.parseInt(scanner.nextLine());
-            switch (choice){
+            switch (choice) {
                 case 1:
                     manage.displayOrderByAccount(account);
                     break;
@@ -142,11 +143,11 @@ public class RunByUser {
                     menuUser(account);
                     break;
             }
-        }while (true);
+        } while (true);
 
     }
 
-    private void bill(String account){
+    private void bill(String account) {
         int choice;
         do {
             System.out.println("---------- Bills ----------");
@@ -155,7 +156,7 @@ public class RunByUser {
             System.out.println("0. Trở lại Menu");
             System.out.println("Mời bạn nhập lựa chọn !!!");
             choice = Integer.parseInt(scanner.nextLine());
-            switch (choice){
+            switch (choice) {
                 case 1:
                     manage.payCOD(account);
                     break;
@@ -166,8 +167,31 @@ public class RunByUser {
                     menuUser(account);
                     break;
             }
-        }while (true);
+        } while (true);
     }
 
+    private void infoBill(String account) {
+        int choice;
+        do {
+            System.out.println("---------- Bills ----------");
+            System.out.println("1. Lịch sử giao dịch");
+            System.out.println("2. Đơn hàng hiện tại");
+            System.out.println("0. Trở lại Menu");
+            System.out.println("Mời bạn nhập lựa chọn !!!");
+            choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1:
+                    manage.displayBillByAccountPay(account);
+                    break;
+                case 2:
+                    manage.displayBillByAccountNotPay(account);
+                    break;
+                case 0:
+                    menuUser(account);
+                    break;
+            }
+        } while (true);
 
+
+    }
 }

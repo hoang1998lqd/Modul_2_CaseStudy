@@ -2,6 +2,7 @@ package service;
 
 import model.*;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -16,6 +17,7 @@ public class Store_Manage implements Serializable {
     public final Method_Bank method_bank = new Method_Bank();
     public final Method_Bill method_bill = new Method_Bill();
     public final Orders_ReadAndWrite readAndWrite = new Orders_ReadAndWrite();
+    public final Bill_ReadAndWrite readAndWriteBill = new Bill_ReadAndWrite();
 
 
     protected final Scanner scanner = new Scanner(System.in);
@@ -217,7 +219,6 @@ public class Store_Manage implements Serializable {
         System.out.println("Bạn đã đặt hàng thành công!!!");
         System.out.println("Đơn hàng đang được chuyển tới bạn trong vài ngày tới.........");
         updateBillByOnline(account);
-        displayBillByAccount(account);
     }
 
 
@@ -719,6 +720,11 @@ public class Store_Manage implements Serializable {
     public  Bill addBill(String account){
         Bill bill = creatBill(account);
         method_bill.add(bill);
+        try {
+            readAndWriteBill.writeFile(method_bill.BillList);
+        }   catch(IOException e){
+            e.printStackTrace();
+        }
         return bill;
     }
 
@@ -785,7 +791,7 @@ public class Store_Manage implements Serializable {
     }
 
     public void updateBillByOnline(String account){
-        Bill bill = getBillByAccount(account);
+        Bill bill = getBillByAccountNotPay(account);
         int money = bill.getUser().getBank().getMoney() - bill.getTotalAllPrice();
         bill.getUser().getBank().setMoney(money);
         Bank bank = bill.getUser().getBank();
@@ -805,8 +811,47 @@ public class Store_Manage implements Serializable {
 
     // Hiển thị hóa đơn qua Account
     public void displayBillByAccount (String account){
-        Bill bill = getBillByAccount(account);
-        System.out.println(bill);
+      for (Bill bill : method_bill.BillList){
+          if (bill.getAccount().getAccount().equals(account)){
+              System.out.println(bill);
+          }
+      }
+    }
+
+
+    //Lịch sử mua hàng
+    public void displayBillByAccountPay(String account){
+        for (Bill bill : method_bill.BillList){
+            if ((bill.getOrderStatus().equals("Đang vận chuyển hàng..."))
+                    &&( bill.getPaymentStatus().equals("Đã thanh toán...")
+                    ||bill.getPaymentStatus().equals("Thanh toán khi nhận hàng...") )){
+                System.out.println(bill);
+            }
+        }
+    }
+
+
+    // Lấy hóa đơn chưa thanh toán
+    public Bill getBillByAccountNotPay(String account){
+        for (Bill bill : method_bill.BillList){
+            if ((!bill.getOrderStatus().equals("Đang vận chuyển hàng..."))
+                    &&( !bill.getPaymentStatus().equals("Đã thanh toán...")
+                    ||!bill.getPaymentStatus().equals("Thanh toán khi nhận hàng...") )){
+               return bill;
+            }
+        }
+        return null;
+    }
+
+    //Hiển thị hóa đơn chưa thanh toán
+    public void displayBillByAccountNotPay(String account){
+        for (Bill bill : method_bill.BillList){
+            if ((!bill.getOrderStatus().equals("Đang vận chuyển hàng..."))
+                    &&( !bill.getPaymentStatus().equals("Đã thanh toán...")
+                    ||!bill.getPaymentStatus().equals("Thanh toán khi nhận hàng...") )){
+                System.out.println(bill);
+            }
+        }
     }
 
     // Hiển thị tất cả hóa đơn
@@ -833,21 +878,28 @@ public class Store_Manage implements Serializable {
     //-------------------- Thanh toán hóa đơn----------------------
     // Kiểm tra phương thức tính tiền (Phương pháp đệ quy)
     public void paymentBill(String account){
-        displayBillByAccount(account);
+        displayBillByAccountNotPay(account);
         User user = getUserByAccount(account);
-        Bill bill = getBillByAccount(account);
+        Bill bill = getBillByAccountNotPay(account);
         System.out.println("----------------------------");
         System.out.println("Mời bạn thanh toán hóa đơn");
         System.out.println("-----------------------------");
         System.out.println("Nhập số tiền cần thanh toán: ");
         int money = Integer.parseInt(scanner.nextLine());
         int moneyInBank = user.getBank().getMoney();
+        int moneyIn ;
        if (moneyInBank >= bill.getTotalAllPrice()){
            if (money == bill.getTotalAllPrice()) {
                payOnline(account);
                method_oder.orderList.removeAll(getOrderByAccount(account));
                try{
+                   moneyIn = moneyInBank - money;
+                   user.getBank().setMoney(moneyIn);
                    readAndWrite.writeFile(method_oder.orderList);
+                   readAndWriteBill.writeFile(method_bill.BillList);
+                   method_user.readAndWrite.writeFile(method_user.UserList);
+                   method_bank.readAndWrite.writeFile(method_bank.bankList);
+
                }catch (Exception e){
                    e.printStackTrace();
                }
@@ -873,46 +925,6 @@ public class Store_Manage implements Serializable {
 
 
 
-    //----------------------- Đăng nhập-------------------------------------------------
-    public void login(){
-        String account;
-        String password;
-        int count = 0;
-        do {
-            System.out.println("Tài khoản: ");
-            account = scanner.nextLine();
-            System.out.println("Mật khẩu: ");
-            password = scanner.nextLine();
-            if ( !checkAccount(method_account.accountList, account, password) && !checkAdmin(account,password)){
-                System.out.println("Tài khoản hoặc mật khẩu không chính xác !!!");
-                count ++;
-            }
-            if (checkAccount(method_account.accountList, account, password)) {
-                System.out.println("1.Hiển thị ");
-                System.out.println("2. Đặt hàng");
-               int choice = Integer.parseInt(scanner.nextLine());
-               do {
-                   switch (choice){
-                       case 1:
-                           displayByPrice(scanner);
-                           break;
-                       case 2:
-                           addOrder(account);
-                   }
-               }while (choice != 0);
-                count = 1;
-                break;
-            } else if (checkAdmin(account,password)){
-                System.out.println("Đây là dòng lệnh được thực thi dưới quyền Admin !!!");
-                count = 1;
-                break;
-            }
-        }while (count != 3 && !checkAccount(method_account.accountList, account, password) || (account.equals("admin") || password.equals("admin")));
-        if (count == 3){
-            System.out.println("Bạn đã nhập sai 3 lần vui lòng thử lại sau !!!");
-        }
-
-    }
 
     public static void main(String[] args) {
         Store_Manage manage  = new Store_Manage();
