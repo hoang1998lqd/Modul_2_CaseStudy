@@ -54,7 +54,7 @@ public class RunByUser {
                         manage.confirmOrder(account);
                         break;
                     case 8:
-                        manage.displayUserByAccount(account);
+                        user(account);
                         break;
                     case 0:
                         login.login();
@@ -68,6 +68,33 @@ public class RunByUser {
         }
     }
 
+
+    public void user(String account){
+        int choice;
+        do {
+            System.out.println("---------- User ----------");
+            System.out.println("1. Thông tin người dùng");
+            System.out.println("2. Thay đổi thông tin người dùng");
+            System.out.println("3. Thay đổi mật khẩu đăng nhập");
+            System.out.println("0. Trở lại Menu");
+            System.out.println("Mời bạn nhập lựa chọn !!!");
+            choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1:
+                    manage.displayUserByAccount(account);
+                    break;
+                case 2:
+                    manage.editUser();
+                    break;
+                case 3:
+                    manage.editPassword(account);
+                    break;
+                case 0:
+                    menuUser(account);
+                    break;
+            }
+        } while (true);
+    }
     public void choiceOrder(String account) {
         int choice;
         do {
@@ -126,6 +153,8 @@ public class RunByUser {
             System.out.println("---------- Cart ----------");
             System.out.println("1. Hiển thị giỏ hàng");
             System.out.println("2. Thanh toán");
+            System.out.println("3. Xóa đơn hàng");
+            System.out.println("4. Sửa đơn hàng");
             System.out.println("0. Trở lại Menu");
             System.out.println("Mời bạn nhập lựa chọn !!!");
             choice = Integer.parseInt(scanner.nextLine());
@@ -137,7 +166,10 @@ public class RunByUser {
                     bill(account);
                     break;
                 case 3:
-                    manage.displayByBrad(scanner);
+                    manage.deleteOrderById();
+                    break;
+                case 4:
+                    manage.editOrder();
                     break;
                 case 0:
                     menuUser(account);
@@ -153,6 +185,8 @@ public class RunByUser {
             System.out.println("---------- Bills ----------");
             System.out.println("1. Thanh toán theo hình thức COD");
             System.out.println("2. Thanh toán Online");
+            System.out.println("3. Thanh toán Online theo hóa đơn");
+            System.out.println("4. Hủy đơn hàng");
             System.out.println("0. Trở lại Menu");
             System.out.println("Mời bạn nhập lựa chọn !!!");
             choice = Integer.parseInt(scanner.nextLine());
@@ -162,6 +196,12 @@ public class RunByUser {
                     break;
                 case 2:
                     manage.paymentBill(account);
+                    break;
+                case 3:
+                    manage.paymentBillByID(account);
+                    break;
+                case 4:
+                    manage.deleteBillById(account);
                     break;
                 case 0:
                     menuUser(account);
@@ -191,7 +231,5 @@ public class RunByUser {
                     break;
             }
         } while (true);
-
-
     }
 }

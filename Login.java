@@ -3,14 +3,34 @@ import service.Store_Manage;
 import java.util.Scanner;
 
 public class Login {
+      private final   Store_Manage manage = new Store_Manage();
+      private final   Scanner scanner = new Scanner(System.in);
 
 
-    public static void main(String[] args) {
-        Store_Manage manage = new Store_Manage();
-//        manage.addAccount();
-        Login login = new Login();
-        login.login();
+
+    protected void storeVIP() {
+        int choice;
+        do {
+            System.out.println("---------- Store ----------");
+            System.out.println("1. Đăng ký");
+            System.out.println("2. Đăng nhập");
+            System.out.println("0. Thoát");
+            System.out.println("Mời bạn nhập lựa chọn !!!");
+            choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1:
+                    register();
+                    break;
+                case 2:
+                    login();
+                    break;
+            }
+        } while (choice != 0);
     }
+    public void register(){
+        manage.addAccount();
+    }
+
     public void login(){
         Store_Manage manage = new Store_Manage();
         Scanner scanner = new Scanner(System.in);

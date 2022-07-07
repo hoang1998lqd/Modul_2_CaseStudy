@@ -22,8 +22,6 @@ public class RunByAdmin {
                 System.out.println("5. Thông tin người dùng");
                 System.out.println("6. Thông tin đơn hàng (Bill)");
                 System.out.println("7. Tổng doanh thu");
-//        System.out.println("7. Nhân viên");
-//        System.out.println("8. Tổng doanh thu");
                 System.out.println("0. Đăng xuất...");
                 System.out.println("Mời bạn nhập lựa chọn !!!");
                 choice = Integer.parseInt(scanner.nextLine());
@@ -68,6 +66,7 @@ public class RunByAdmin {
           System.out.println("1. Sửa sản phẩm");
           System.out.println("2. Xóa sản phẩm");
           System.out.println("3. Sửa thương hiệu");
+          System.out.println("4. Xóa thương hiệu");
           System.out.println("0. Trở lại Menu");
           System.out.println("Mời bạn nhập lựa chọn !!!");
           choice = Integer.parseInt(scanner.nextLine());
@@ -80,6 +79,9 @@ public class RunByAdmin {
                   break;
               case 3:
                   manage.editBrand();
+                  break;
+              case 4:
+                  manage.deleteByIdBrand();
                   break;
               case 0:
                   menuAdmin();
@@ -117,6 +119,7 @@ public class RunByAdmin {
         do {
             System.out.println("---------- Display Users ----------");
             System.out.println("1. Hiển thị tất cả");
+            System.out.println("2. Hiển thị người dùng theo ID");
             System.out.println("2. Xóa người dùng");
             System.out.println("0. Trở lại Menu");
             System.out.println("Mời bạn nhập lựa chọn !!!");
@@ -126,6 +129,9 @@ public class RunByAdmin {
                     manage.displayAllUser();
                     break;
                 case 2:
+                    manage.displayUserById();
+                    break;
+                case 3:
                     manage.deleteUserById();
                     break;
                 case 0:

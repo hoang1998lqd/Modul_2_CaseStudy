@@ -75,32 +75,34 @@ public class Store_Manage implements Serializable {
         return new Account(name,pass);
     }
 
-    public void editPassword(){
+    public void editPassword(String account){
         System.out.println("-------------------------");
-        System.out.println("Nhập ID cần thay đổi mật khẩu: ");
-        int id = Integer.parseInt(scanner.nextLine());
-        Account account = method_account.getById(id);
+        Account account1 = method_account.getAccountByString(account);
         String password;
         do {
             System.out.println("Nhập mật khẩu mới: ");
             password = scanner.nextLine();
         }while (!checkAccountByChar(password));
-        account.setPassword(password);
-        method_account.update(account);
+        account1.setPassword(password);
+        method_account.update(account1);
     }
 
+
+    // Xóa tài khoản theo ID
     public void deleteById(){
         System.out.println("-------------------------");
         System.out.println("Nhập ID tài khoản cần xóa: ");
         int id = Integer.parseInt(scanner.nextLine());
         Account account = method_account.deleteById(id);
-        if (account != null){
+        if (account == null){
             System.out.println("Xóa tài khoản thành công !!!");
         }else {
             System.out.println("Không tìm thấy ID theo yêu cầu !!!");
         }
     }
 
+
+    // Hiển thị tài khoản theo ID
     public void displayByIdAccount(){
         System.out.println("-------------------------");
         System.out.println("Nhập ID bạn cần hiển thị: ");
@@ -191,30 +193,18 @@ public class Store_Manage implements Serializable {
 
     // Khi nhấn vào thanh toán sẽ có 2 hình thức thanh toán là COD và Online
     // Sau khi nhấn thanh toán sẽ trở ra Menu cửa hàng ban đầu.
-    public void statusOrder(String account){
-       do {
-           System.out.println("Mời bạn chọn hình thức thanh toán: ");
-           System.out.println("1. Thanh toán trực tuyến...");
-           System.out.println("2. Thanh toán trực tiếp...");
-           int choice = Integer.parseInt(scanner.nextLine());
-            switch (choice){
-                case 1:
-                    payOnline(account);
-                    break;
-                case 2:
-                    payCOD(account);
-                    break;
-            }
-       }while (true);
-    }
 
     // ---------------------------Thanh toán---------------------------------
+
+    // Thanh toán COD
     public void payCOD(String account){
         System.out.println("Bạn đã đặt hàng thành công!!!");
         System.out.println("Đơn hàng đang được chuyển tới bạn trong vài ngày tới.........");
         updateBillByCOD(account);
         displayBillByAccount(account);
     }
+
+    // Thanh toán Online
     public void payOnline(String account){
         System.out.println("Bạn đã đặt hàng thành công!!!");
         System.out.println("Đơn hàng đang được chuyển tới bạn trong vài ngày tới.........");
@@ -350,13 +340,15 @@ public class Store_Manage implements Serializable {
         System.out.println("Nhập ID thương hiệu cần xóa: ");
         int id = Integer.parseInt(scanner.nextLine());
         Brand brand = method_brand.deleteById(id);
-        if (brand != null){
+        if (brand == null){
             System.out.println("Xóa thương hiệu thành công !!!");
         }else {
             System.out.println("Không tìm thấy ID theo yêu cầu !!!");
         }
     }
 
+
+    // Hiển thị thương hiệu theo ID
     public void displayByIdBrand(){
         System.out.println("-------------------------");
         System.out.println("Nhập ID bạn cần hiển thị: ");
@@ -453,6 +445,8 @@ public class Store_Manage implements Serializable {
         }
     }
 
+
+    // Hiển thị sản phẩm theo ID
     public void displayProductById(){
         System.out.println("-------------------------");
         System.out.println("Nhập ID sản phẩm bạn muốn hiển thị: ");
@@ -666,7 +660,7 @@ public class Store_Manage implements Serializable {
     }
     public void editOrder(){
         System.out.println("-------------------------");
-        System.out.println("Nhập ID cần thay đổi: ");
+        System.out.println("Nhập ID đơn hàng cần thay đổi: ");
         int id = Integer.parseInt(scanner.nextLine());
         Order order = method_oder.getById(id);
         System.out.println("Nhập số lượng mua hàng: ");
@@ -675,16 +669,17 @@ public class Store_Manage implements Serializable {
         System.out.println("Nhập ID sản phẩm bạn muốn mua: ");
         int idProduct = Integer.parseInt(scanner.nextLine());
         Product product = method_product.getById(idProduct);
+        order.setProduct(product);
         long totalPrice = count * product.getPrice();
         order.setTotalPrice(totalPrice);
     }
 
-    public void deleteOrderByIdz(){
+    public void deleteOrderById(){
         System.out.println("-------------------------");
-        System.out.println("Nhập ID người dùng bạn cần xóa");
+        System.out.println("Nhập ID đơn hàng bạn cần xóa");
         int id = Integer.parseInt(scanner.nextLine());
         Order order = method_oder.deleteById(id);
-        if (order != null){
+        if (order == null){
             System.out.println("Xóa đơn hàng thành công !!!");
         }else {
             System.out.println("Xóa đơn hàng thất bại do không tìm thấy ID theo yêu cầu !!!");
@@ -695,6 +690,8 @@ public class Store_Manage implements Serializable {
         method_oder.displayAll();
     }
 
+
+    // Hiển thị đơn hàng theo ID
     public void displayOrderById(){
         System.out.println("-------------------------------");
         System.out.println("Nhập ID bạn cần hiển thị: ");
@@ -822,11 +819,13 @@ public class Store_Manage implements Serializable {
     //Lịch sử mua hàng
     public void displayBillByAccountPay(String account){
         for (Bill bill : method_bill.BillList){
-            if ((bill.getOrderStatus().equals("Đang vận chuyển hàng..."))
-                    &&( bill.getPaymentStatus().equals("Đã thanh toán...")
-                    ||bill.getPaymentStatus().equals("Thanh toán khi nhận hàng...") )){
-                System.out.println(bill);
-            }
+          if (bill.getAccount().getAccount().equals(account)){
+              if ((bill.getOrderStatus().equals("Đang vận chuyển hàng..."))
+                      &&( bill.getPaymentStatus().equals("Đã thanh toán...")
+                      ||bill.getPaymentStatus().equals("Thanh toán khi nhận hàng...") )){
+                  System.out.println(bill);
+              }
+          }
         }
     }
 
@@ -834,10 +833,12 @@ public class Store_Manage implements Serializable {
     // Lấy hóa đơn chưa thanh toán
     public Bill getBillByAccountNotPay(String account){
         for (Bill bill : method_bill.BillList){
-            if ((!bill.getOrderStatus().equals("Đang vận chuyển hàng..."))
-                    &&( !bill.getPaymentStatus().equals("Đã thanh toán...")
-                    ||!bill.getPaymentStatus().equals("Thanh toán khi nhận hàng...") )){
-               return bill;
+            if (bill.getAccount().getAccount().equals(account)){
+                if ((!bill.getOrderStatus().equals("Đang vận chuyển hàng..."))
+                        &&( !bill.getPaymentStatus().equals("Đã thanh toán...")
+                        ||!bill.getPaymentStatus().equals("Thanh toán khi nhận hàng...") )){
+                    return bill;
+                }
             }
         }
         return null;
@@ -846,10 +847,12 @@ public class Store_Manage implements Serializable {
     //Hiển thị hóa đơn chưa thanh toán
     public void displayBillByAccountNotPay(String account){
         for (Bill bill : method_bill.BillList){
-            if ((!bill.getOrderStatus().equals("Đang vận chuyển hàng..."))
-                    &&( !bill.getPaymentStatus().equals("Đã thanh toán...")
-                    ||!bill.getPaymentStatus().equals("Thanh toán khi nhận hàng...") )){
-                System.out.println(bill);
+            if (bill.getAccount().getAccount().equals(account)){
+                if ((!bill.getOrderStatus().equals("Đang vận chuyển hàng..."))
+                        &&( !bill.getPaymentStatus().equals("Đã thanh toán...")
+                        ||!bill.getPaymentStatus().equals("Thanh toán khi nhận hàng...") )){
+                    System.out.println(bill);
+                }
             }
         }
     }
@@ -861,10 +864,6 @@ public class Store_Manage implements Serializable {
     }
 
 
-//    public Bill totalMoney(String account){
-//
-//
-//    }
 
     // Xác nhận nhận hàng thành công
     public void confirmOrder(String account){
@@ -881,6 +880,20 @@ public class Store_Manage implements Serializable {
         displayBillByAccountNotPay(account);
         User user = getUserByAccount(account);
         Bill bill = getBillByAccountNotPay(account);
+        pay(account, user, bill);
+    }
+
+
+    public void paymentBillByID(String account){
+        displayBillByAccountNotPay(account);
+        System.out.println("Nhập ID hóa đơn cần thanh toán: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        User user = getUserByAccount(account);
+        Bill bill = method_bill.getById(id);
+        pay(account, user, bill);
+    }
+
+    private void pay(String account, User user, Bill bill) {
         System.out.println("----------------------------");
         System.out.println("Mời bạn thanh toán hóa đơn");
         System.out.println("-----------------------------");
@@ -888,31 +901,48 @@ public class Store_Manage implements Serializable {
         int money = Integer.parseInt(scanner.nextLine());
         int moneyInBank = user.getBank().getMoney();
         int moneyIn ;
-       if (moneyInBank >= bill.getTotalAllPrice()){
-           if (money == bill.getTotalAllPrice()) {
-               payOnline(account);
-               method_oder.orderList.removeAll(getOrderByAccount(account));
-               try{
-                   moneyIn = moneyInBank - money;
-                   user.getBank().setMoney(moneyIn);
-                   readAndWrite.writeFile(method_oder.orderList);
-                   readAndWriteBill.writeFile(method_bill.BillList);
-                   method_user.readAndWrite.writeFile(method_user.UserList);
-                   method_bank.readAndWrite.writeFile(method_bank.bankList);
+        if (moneyInBank >= bill.getTotalAllPrice()){
+            if (money == bill.getTotalAllPrice()) {
+                payOnline(account);
+                method_oder.orderList.removeAll(getOrderByAccount(account));
+                try{
+                    moneyIn = moneyInBank - money;
+                    user.getBank().setMoney(moneyIn);
+                    readAndWrite.writeFile(method_oder.orderList);
+                    readAndWriteBill.writeFile(method_bill.BillList);
+                    method_user.readAndWrite.writeFile(method_user.UserList);
+                    method_bank.readAndWrite.writeFile(method_bank.bankList);
 
-               }catch (Exception e){
-                   e.printStackTrace();
-               }
-           } else {
-               System.out.println("Thanh toán thất bại!!!");
-               paymentBill(account);
-           }
-       }else {
-           System.out.println("Thanh toán thất bạn tài khoản của bạn không đủ để thanh toán");
-           updateMoney();
-           paymentBill(account);
-       }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Thanh toán thất bại!!!");
+                paymentBill(account);
+            }
+        }else {
+            System.out.println("Thanh toán thất bạn tài khoản của bạn không đủ để thanh toán");
+            updateMoney();
+            paymentBill(account);
+        }
     }
+
+
+    public void deleteBillById(String account){
+        displayBillByAccountNotPay(account);
+        System.out.println("-------------------------");
+        System.out.println("Nhập ID đơn hàng bạn muốn hủy");
+        int id = Integer.parseInt(scanner.nextLine());
+        Bill bill = method_bill.deleteById(id);
+        if (bill == null){
+            System.out.println("Xóa đơn hàng thành công !!!");
+        }else {
+            System.out.println("Xóa đơn hàng thất bại do không tìm thấy ID theo yêu cầu !!!");
+        }
+
+    }
+
+
 
     public void turnOver(){
         int money = 0;
@@ -923,21 +953,6 @@ public class Store_Manage implements Serializable {
 
     }
 
-
-
-
-    public static void main(String[] args) {
-        Store_Manage manage  = new Store_Manage();
-
-
-    }
-
-    public User account(String acc, User user){
-        if  (user.getAccount().getAccount().equals(acc)){
-            return user;
-        }
-        return null;
-    }
 
 }
 

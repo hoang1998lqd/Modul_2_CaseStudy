@@ -81,6 +81,7 @@ public class Order implements Serializable {
     @Override
     public String toString() {
         return "Đơn hàng: {" +
+                " ID đơn hàng: " + id +
                 " Tên sản phẩm: " + product.getName_product() +
                 ", Thương hiệu: " + product.getBrand().getNameBrand() +
                 ", Màu sắc: " + product.getColor() +
