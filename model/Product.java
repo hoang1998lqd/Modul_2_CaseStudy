@@ -1,7 +1,9 @@
 package model;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.Comparator;
+import java.util.Locale;
 
 public class Product implements Serializable {
     public static int ID_Product = 1;
@@ -24,12 +26,20 @@ public class Product implements Serializable {
         this.brand = brand;
     }
 
+
+    public String changeBalanceCustomer(){
+        long a = price;
+        Locale locale = new Locale("vi", "VN");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+        String money = numberFormat.format(a);
+        return money;
+    }
     @Override
     public String toString() {
         return "Product{" +
                 "ID=" + id +
                 ", Tên sản phẩm: '" + name_product + '\'' +
-                ", Giá tiền: " + price +  " " + "VNĐ" +
+                ", Giá tiền: " + changeBalanceCustomer() +
                 ", Số lượng: " + amount +
                 ", Màu sắc: '" + color + '\'' +
                 ", Thương hiệu: " + brand.getNameBrand() +

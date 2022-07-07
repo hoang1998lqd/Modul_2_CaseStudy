@@ -1,6 +1,8 @@
 package model;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class Order implements Serializable {
     public static int ID_Order = 1;
@@ -77,7 +79,13 @@ public class Order implements Serializable {
     public void setTotalPrice(long totalPrice) {
         this.totalPrice = totalPrice;
     }
-
+    public String changeBalanceCustomer(){
+        long a = totalPrice;
+        Locale locale = new Locale("vi", "VN");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+        String money = numberFormat.format(a);
+        return money;
+    }
     @Override
     public String toString() {
         return "Đơn hàng: {" +
@@ -85,9 +93,9 @@ public class Order implements Serializable {
                 " Tên sản phẩm: " + product.getName_product() +
                 ", Thương hiệu: " + product.getBrand().getNameBrand() +
                 ", Màu sắc: " + product.getColor() +
-                ", Giá sản phẩm: " + product.getPrice() +
+                ", Giá sản phẩm: " + product.changeBalanceCustomer() +
                 ", Số lượng mua: " + count +
-                ", Thành tiền: " + totalPrice + " VNĐ" +
+                ", Thành tiền: " + changeBalanceCustomer()+
                 '}';
     }
     public String string(){

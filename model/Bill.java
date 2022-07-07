@@ -2,7 +2,9 @@ package model;
 
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Bill extends Order implements Serializable {
     public static int ID_Bill = 1;
@@ -96,6 +98,13 @@ public class Bill extends Order implements Serializable {
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
     }
+    public String changeBalanceCustomer(){
+        int a = totalAllPrice;
+        Locale locale = new Locale("vi", "VN");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+        String money = numberFormat.format(a);
+        return money;
+    }
 
     @Override
     public String toString() {
@@ -107,7 +116,7 @@ public class Bill extends Order implements Serializable {
                 "\n "  +
                 ", order=" + order +
                 "\n "  +
-                ", Thanh toán : " + totalAllPrice + " VNĐ" +
+                ", Thanh toán : " + changeBalanceCustomer() +
                 ", Trạng thái thanh toán: '" + paymentStatus + '\'' +
                 ", Trạng thái đơn hàng: '" + orderStatus + '\'' +
                 '}';

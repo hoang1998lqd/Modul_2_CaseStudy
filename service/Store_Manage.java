@@ -2,8 +2,10 @@ package service;
 
 import model.*;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -68,6 +70,7 @@ public class Store_Manage implements Serializable {
         do {
             System.out.println("Nhập mật khẩu: ");
             pass = scanner.nextLine();
+
         }while (!checkAccountByChar(pass));
         if (method_account.accountList.size() > 0){
             Account.ID_Account = method_account.accountList.get(method_account.accountList.size()-1).getId() + 1;
@@ -986,17 +989,24 @@ public class Store_Manage implements Serializable {
     }
 
     public void turnOver(){
-        int money = 0;
+        long money = 0;
         for (Bill bill : method_bill.BillList){
             money += bill.getTotalAllPrice();
         }
-        System.out.println("Doanh thu của cửa hàng là: " + money + " VNĐ");
+        System.out.println("Doanh thu của cửa hàng là: " + changeBalanceCustomer(money));
 
+    }
+    public String changeBalanceCustomer(long money){
+        long a = money;
+        Locale locale = new Locale("vi", "VN");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+        return numberFormat.format(a);
     }
 
     public static void main(String[] args) {
         Store_Manage manage = new Store_Manage();
-        manage.addAccount();
+//        manage.addAccount();
+        System.out.println(manage.changeBalanceCustomer(123456));;
     }
 }
 

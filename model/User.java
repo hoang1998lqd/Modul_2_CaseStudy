@@ -88,7 +88,7 @@ public class User  implements Serializable {
                 ", Địa chỉ liên hệ: '" + address + '\'' +
                 '\n' +
                 "Số tài khoản: '" + bank.accountNumber + '\'' +
-                ", Số dư toàn khoản: " + bank.getMoney() +
+                ", Số dư toàn khoản: " + bank.changeBalanceCustomer() +
                 ", Mã pin: '" + bank.getCode() + '\'' +
                 ", Tài khoản: " + account +
                 '}';

@@ -13,7 +13,6 @@ public class RunByUser {
     public RunByUser() {
     }
 
-
     public void menuUser(String account) {
         try {
             int choice;

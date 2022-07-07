@@ -3,6 +3,8 @@ package model;
 import com.sun.xml.internal.bind.v2.model.core.ID;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class Bank implements Serializable {
     public static int ID_Bank = 1;
@@ -60,13 +62,20 @@ public class Bank implements Serializable {
     public void setCode(String code) {
         this.code = code;
     }
+    public String changeBalanceCustomer(){
+        int a = money;
+        Locale locale = new Locale("vi", "VN");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+        String money = numberFormat.format(a);
+        return money;
+    }
 
     @Override
     public String toString() {
         return "Tài khoản ngân hàng {" +
                 "id=" + id +
                 ", Số tài khoản: '" + accountNumber + '\'' +
-                ", Số dư toàn khoản: " + money +
+                ", Số dư toàn khoản: " + changeBalanceCustomer() +
                 ", Mã pin: '" + code + '\'' +
                 '}';
     }
