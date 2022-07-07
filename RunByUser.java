@@ -13,14 +13,13 @@ public class RunByUser {
     public RunByUser() {
     }
 
-    // Lỗi phần tính toán list order
 
     public void menuUser(String account) {
         try {
             int choice;
             do {
                 User user = manage.getUserByAccount(account);
-                System.out.println("Chào mừng bạn " + user.getFullName() + " đã tới cửa hàng <3");
+                System.out.println("Chào mừng bạn " + user.getFullName().toUpperCase() + " đã tới cửa hàng <3");
                 System.out.println("1. Hiển thị sản phẩm.");
                 System.out.println("2. Đặt hàng.");
                 System.out.println("3. Giỏ hàng.");
@@ -58,7 +57,7 @@ public class RunByUser {
                         user(account);
                         break;
                     case 0:
-                        login.login();
+                        login.storeVIP();
                         break;
                 }
             } while (true);
@@ -71,166 +70,202 @@ public class RunByUser {
 
 
     public void user(String account){
-        int choice;
-        do {
-            System.out.println("---------- User ----------");
-            System.out.println("1. Thông tin người dùng");
-            System.out.println("2. Thay đổi thông tin người dùng");
-            System.out.println("3. Thay đổi mật khẩu đăng nhập");
-            System.out.println("0. Trở lại Menu");
-            System.out.println("Mời bạn nhập lựa chọn !!!");
-            choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1:
-                    manage.displayUserByAccount(account);
-                    break;
-                case 2:
-                    manage.editUser();
-                    break;
-                case 3:
-                    manage.editPassword(account);
-                    break;
-                case 0:
-                    menuUser(account);
-                    break;
-            }
-        } while (true);
+       try {
+           int choice;
+           do {
+               System.out.println("---------- User ----------");
+               System.out.println("1. Thông tin người dùng");
+               System.out.println("2. Thay đổi thông tin người dùng");
+               System.out.println("3. Thay đổi mật khẩu đăng nhập");
+               System.out.println("0. Trở lại Menu");
+               System.out.println("Mời bạn nhập lựa chọn !!!");
+               choice = Integer.parseInt(scanner.nextLine());
+               switch (choice) {
+                   case 1:
+                       manage.displayUserByAccount(account);
+                       break;
+                   case 2:
+                       manage.editUser();
+                       break;
+                   case 3:
+                       manage.editPassword(account);
+                       break;
+                   case 0:
+                       menuUser(account);
+                       break;
+               }
+           } while (true);
+       }catch (InputMismatchException e){
+           System.out.println("-----------------------------------");
+           System.out.println("Vui lòng nhập lại lựa chọn của bạn...");
+           user(account);
+       }
     }
     public void choiceOrder(String account) {
-        int choice;
-        do {
-            System.out.println("---------- Bills Product ----------");
-            System.out.println("1. Đặt hàng");
-            System.out.println("2. Đặt hộ");
-            System.out.println("0. Trở lại Menu");
-            System.out.println("Mời bạn nhập lựa chọn !!!");
-            choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1:
-                    manage.addBill(account);
-                    break;
-                case 2:
-                    manage.addBillBook(account);
-                    break;
-                case 0:
-                    menuUser(account);
-                    break;
-            }
-        } while (true);
+       try {
+           int choice;
+           do {
+               System.out.println("---------- Bills Product ----------");
+               System.out.println("1. Đặt hàng");
+               System.out.println("2. Đặt hộ");
+               System.out.println("0. Trở lại Menu");
+               System.out.println("Mời bạn nhập lựa chọn !!!");
+               choice = Integer.parseInt(scanner.nextLine());
+               switch (choice) {
+                   case 1:
+                       manage.addBill(account);
+                       break;
+                   case 2:
+                       manage.addBillBook(account);
+                       break;
+                   case 0:
+                       menuUser(account);
+                       break;
+               }
+           } while (true);
+       }catch (InputMismatchException e){
+           System.out.println("----------------------------------");
+           System.out.println("Bạn đã nhập sai dữ liệu. Vui lòng nhập lại...");
+           choiceOrder(account);
+       }
     }
 
     private void choiceProduct(String account) {
-        int choice;
-        do {
-            System.out.println("----------Product----------");
-            System.out.println("1. Hiển thị tất cả sản phẩm");
-            System.out.println("2. Hiển thị theo giá sản phẩm");
-            System.out.println("3. Hiển thị theo thương hiệu");
-            System.out.println("0. Trở lại Menu");
-            System.out.println("Mời bạn nhập lựa chọn !!!");
-            choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1:
-                    manage.displayAllProduct();
-                    break;
-                case 2:
-                    manage.displayByPrice(scanner);
-                    break;
-                case 3:
-                    manage.displayByBrad(scanner);
-                    break;
-                case 0:
-                    menuUser(account);
-                    break;
-            }
-        } while (true);
+       try{
+           int choice;
+           do {
+               System.out.println("----------Product----------");
+               System.out.println("1. Tìm kiếm sản phẩm.");
+               System.out.println("2. Hiển thị tất cả sản phẩm.");
+               System.out.println("3. Hiển thị theo giá sản phẩm.");
+               System.out.println("4. Hiển thị theo thương hiệu.");
+               System.out.println("0. Trở lại Menu.");
+               System.out.println("Mời bạn nhập lựa chọn !!!");
+               choice = Integer.parseInt(scanner.nextLine());
+               switch (choice) {
+                   case 1:
+                       manage.searchByNameProduct();
+                       break;
+                   case 2:
+                       manage.displayAllProduct();
+                       break;
+                   case 3:
+                       manage.displayByPrice(scanner);
+                       break;
+                   case 4:
+                       manage.displayByBrad(scanner);
+                       break;
+                   case 0:
+                       menuUser(account);
+                       break;
+               }
+           } while (true);
+       }catch (InputMismatchException e){
+           System.out.println("--------------------------------------------------");
+           System.out.println("Bạn đã nhập sai dữ liệu. Vui lòng nhập lại...");
+           choiceProduct(account);
+       }
 
     }
 
 
     private void cart(String account) {
-        int choice;
-        do {
-            System.out.println("---------- Cart ----------");
-            System.out.println("1. Hiển thị giỏ hàng");
-            System.out.println("2. Thanh toán");
-            System.out.println("3. Xóa đơn hàng");
-            System.out.println("4. Sửa đơn hàng");
-            System.out.println("0. Trở lại Menu");
-            System.out.println("Mời bạn nhập lựa chọn !!!");
-            choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1:
-                    manage.displayOrderByAccount(account);
-                    break;
-                case 2:
-                    bill(account);
-                    break;
-                case 3:
-                    manage.deleteOrderById();
-                    break;
-                case 4:
-                    manage.editOrder();
-                    break;
-                case 0:
-                    menuUser(account);
-                    break;
-            }
-        } while (true);
+      try {
+          int choice;
+          do {
+              System.out.println("---------- Cart ----------");
+              System.out.println("1. Hiển thị giỏ hàng");
+              System.out.println("2. Thanh toán");
+              System.out.println("3. Xóa đơn hàng");
+              System.out.println("4. Sửa đơn hàng");
+              System.out.println("0. Trở lại Menu");
+              System.out.println("Mời bạn nhập lựa chọn !!!");
+              choice = Integer.parseInt(scanner.nextLine());
+              switch (choice) {
+                  case 1:
+                      manage.displayOrderByAccount(account);
+                      break;
+                  case 2:
+                      bill(account);
+                      break;
+                  case 3:
+                      manage.deleteOrderById();
+                      break;
+                  case 4:
+                      manage.editOrder();
+                      break;
+                  case 0:
+                      menuUser(account);
+                      break;
+              }
+          } while (true);
+      }catch (InputMismatchException e){
+          System.out.println("--------------------------------------------------");
+          System.out.println("Bạn đã nhập sai dữ liệu. Vui lòng nhập lại...");
+          cart(account);
+      }
 
     }
 
     private void bill(String account) {
-        int choice;
-        do {
-            System.out.println("---------- Bills ----------");
-            System.out.println("1. Thanh toán theo hình thức COD");
-            System.out.println("2. Thanh toán Online");
-            System.out.println("3. Thanh toán Online theo hóa đơn");
-            System.out.println("4. Hủy đơn hàng");
-            System.out.println("0. Trở lại Menu");
-            System.out.println("Mời bạn nhập lựa chọn !!!");
-            choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1:
-                    manage.payCOD(account);
-                    break;
-                case 2:
-                    manage.paymentBill(account);
-                    break;
-                case 3:
-                    manage.paymentBillByID(account);
-                    break;
-                case 4:
-                    manage.deleteBillById(account);
-                    break;
-                case 0:
-                    menuUser(account);
-                    break;
-            }
-        } while (true);
+      try {
+          int choice;
+          do {
+              System.out.println("---------- Bills ----------");
+              System.out.println("1. Thanh toán Online");
+              System.out.println("2. Thanh toán Online theo hóa đơn");
+              System.out.println("3. Hủy đơn hàng");
+              System.out.println("0. Trở lại Menu");
+              System.out.println("Mời bạn nhập lựa chọn !!!");
+              choice = Integer.parseInt(scanner.nextLine());
+              switch (choice) {
+                  case 1:
+                      manage.paymentBill(account);
+                      break;
+                  case 2:
+                      manage.paymentBillByID(account);
+                      break;
+                  case 3:
+                      manage.deleteBillById(account);
+                      break;
+                  case 0:
+                      menuUser(account);
+                      break;
+              }
+          } while (true);
+      }catch (InputMismatchException e){
+          System.out.println("--------------------------------------------------");
+          System.out.println("Bạn đã nhập sai dữ liệu. Vui lòng nhập lại...");
+          bill(account);
+      }
     }
 
     private void infoBill(String account) {
-        int choice;
-        do {
-            System.out.println("---------- Bills ----------");
-            System.out.println("1. Lịch sử giao dịch");
-            System.out.println("2. Đơn hàng hiện tại");
-            System.out.println("0. Trở lại Menu");
-            System.out.println("Mời bạn nhập lựa chọn !!!");
-            choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1:
-                    manage.displayBillByAccountPay(account);
-                    break;
-                case 2:
-                    manage.displayBillByAccountNotPay(account);
-                    break;
-                case 0:
-                    menuUser(account);
-                    break;
-            }
-        } while (true);
+       try {
+           int choice;
+           do {
+               System.out.println("---------- Bills ----------");
+               System.out.println("1. Lịch sử giao dịch");
+               System.out.println("2. Đơn hàng hiện tại");
+               System.out.println("0. Trở lại Menu");
+               System.out.println("Mời bạn nhập lựa chọn !!!");
+               choice = Integer.parseInt(scanner.nextLine());
+               switch (choice) {
+                   case 1:
+                       manage.displayBillByAccountPay(account);
+                       break;
+                   case 2:
+                       manage.displayBillByAccountNotPay(account);
+                       break;
+                   case 0:
+                       menuUser(account);
+                       break;
+               }
+           } while (true);
+       }catch (InputMismatchException e){
+           System.out.println("--------------------------------------------------");
+           System.out.println("Bạn đã nhập sai dữ liệu. Vui lòng nhập lại...");
+           infoBill(account);
+       }
     }
 }

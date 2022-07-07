@@ -8,7 +8,7 @@ public class Login {
 
 
 
-    protected void storeVIP() {
+    protected  void storeVIP() {
         int choice;
         do {
             System.out.println("---------- Store ----------");

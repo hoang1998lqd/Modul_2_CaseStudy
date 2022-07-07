@@ -565,33 +565,49 @@ public class Store_Manage implements Serializable {
     // > 20000000;
 
     public void displayByPrice(Scanner scanner){
-        int choice;
-        do {
-            System.out.println("Mời bạn lựa chọn hiển thị");
-            System.out.println("1. Từ 10,000,000 - 15,000,000.");
-            System.out.println("2. Từ 15,000,000 - 20,000,000.");
-            System.out.println("3. Lớn hơn 20,000,000.");
-            System.out.println("4. Sắp xếp giảm dần.");
-            System.out.println("5. Sắp xếp tăng dần.");
-            choice = Integer.parseInt(scanner.nextLine());
-            switch (choice){
-                case 1:
-                    displayProduct2();
-                    break;
-                case 2:
-                    displayProduct1();
-                    break;
-                case 3:
-                    displayProduct3();
-                    break;
-                case 4:
-                    displayUp();
-                    break;
-                case 5:
-                    displayDown();
-                    break;
+      try {
+          int choice;
+          do {
+              System.out.println("Mời bạn lựa chọn hiển thị");
+              System.out.println("1. Từ 10,000,000 - 15,000,000.");
+              System.out.println("2. Từ 15,000,000 - 20,000,000.");
+              System.out.println("3. Lớn hơn 20,000,000.");
+              System.out.println("4. Sắp xếp giảm dần.");
+              System.out.println("5. Sắp xếp tăng dần.");
+              choice = Integer.parseInt(scanner.nextLine());
+              switch (choice){
+                  case 1:
+                      displayProduct2();
+                      break;
+                  case 2:
+                      displayProduct1();
+                      break;
+                  case 3:
+                      displayProduct3();
+                      break;
+                  case 4:
+                      displayUp();
+                      break;
+                  case 5:
+                      displayDown();
+                      break;
+              }
+          }while (choice != 0);
+      }catch (InputMismatchException e){
+          System.out.println("--------------------------------------------------");
+          System.out.println("Bạn đã nhập sai dữ liệu. Vui lòng nhập lại...");
+          displayByPrice(scanner);
+      }
+    }
+
+    public void searchByNameProduct(){
+        System.out.println("Nhập tên sản phẩm bạn muốn tìm kiếm...");
+        String name = scanner.nextLine();
+        for (Product product : method_product.productList){
+            if (product.getName_product().toUpperCase().contains(name.toUpperCase())){
+                System.out.println(product);
             }
-        }while (choice != 0);
+        }
     }
 
 
@@ -601,15 +617,20 @@ public class Store_Manage implements Serializable {
     public void addOrder(String account){
         Order order = creatOrder(account);
         boolean flag = false;
-        long amount;
-        for (Order order1 : method_oder.creatListByAccount(account)){
-            if (order1.getProduct().getId() == order.getProduct().getId()){
-                flag = true;
-                amount = order.getCount() + order1. getCount();
-                order1.setCount(amount);
-                System.out.println(order1);
+        Product product = order.getProduct();
+        long amount ;
+            for (Order order1 : method_oder.creatListByAccount(account)){
+                if (order1.getProduct().getId() == order.getProduct().getId()){
+                    flag = true;
+                    amount = order.getCount() + order1. getCount();
+                    if (amount > product.getAmount()){
+                        addOrder(account);
+                    }else {
+                        order1.setCount(amount);
+                        System.out.println(order1);
+                    }
+                }
             }
-        }
         if (!flag){
             System.out.println(order);
             System.out.println("----------------------------------");
@@ -722,7 +743,6 @@ public class Store_Manage implements Serializable {
             System.out.println(order);
         }
     }
-
 
 
     // ---------------------------------------Bills---------------------------------
@@ -857,6 +877,18 @@ public class Store_Manage implements Serializable {
         return null;
     }
 
+    public Bill getBillByAccountCOD(String account){
+        for (Bill bill : method_bill.BillList){
+            if (bill.getAccount().getAccount().equals(account)){
+                if ((!bill.getOrderStatus().equals("Đang vận chuyển hàng..."))
+                        &&!bill.getPaymentStatus().equals("Thanh toán khi nhận hàng...") ){
+                    return bill;
+                }
+            }
+        }
+        return null;
+    }
+
     //Hiển thị hóa đơn chưa thanh toán
     public void displayBillByAccountNotPay(String account){
         for (Bill bill : method_bill.BillList){
@@ -876,8 +908,6 @@ public class Store_Manage implements Serializable {
         method_bill.displayAll();
     }
 
-
-
     // Xác nhận nhận hàng thành công
     public void confirmOrder(String account){
         System.out.println("-------------------------------------");
@@ -890,15 +920,15 @@ public class Store_Manage implements Serializable {
     //-------------------- Thanh toán hóa đơn----------------------
     // Kiểm tra phương thức tính tiền (Phương pháp đệ quy)
     public void paymentBill(String account){
-        displayBillByAccountNotPay(account);
+        getBillByAccountCOD(account);
         User user = getUserByAccount(account);
-        Bill bill = getBillByAccountNotPay(account);
+        Bill bill = getBillByAccountCOD(account);
+        System.out.println(bill);
         pay(account, user, bill);
     }
 
-
     public void paymentBillByID(String account){
-        displayBillByAccountNotPay(account);
+        getBillByAccountCOD(account);
         System.out.println("Nhập ID hóa đơn cần thanh toán: ");
         int id = Integer.parseInt(scanner.nextLine());
         User user = getUserByAccount(account);
