@@ -94,10 +94,10 @@ public class Method_Bank implements CRUD<Bank> {
     public boolean checkAccountNumber(String account){
         for (Bank bank : bankList){
             if (bank.getAccountNumber().equals(account)){
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public boolean checkPin(String code){

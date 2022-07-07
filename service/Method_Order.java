@@ -94,5 +94,17 @@ public class Method_Order implements CRUD<Order> , Serializable {
         }
     }
 
+    // List Order cùng tài khoản
+    public ArrayList<Order> creatListByAccount (String account){
+        ArrayList<Order> list = new ArrayList<>();
+        for (Order order : orderList){
+            if (order.getAccount().getAccount().equals(account)){
+                list.add(order);
+            }
+        }
+        return list;
+    }
+
+
 
 }

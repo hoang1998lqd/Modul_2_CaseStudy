@@ -1,4 +1,5 @@
 import model.Account;
+import model.User;
 import service.Store_Manage;
 
 import java.util.InputMismatchException;
@@ -12,14 +13,14 @@ public class RunByUser {
     public RunByUser() {
     }
 
-
     // Lỗi phần tính toán list order
 
     public void menuUser(String account) {
         try {
             int choice;
             do {
-                System.out.println("---------- QUYỀN USERS ----------");
+                User user = manage.getUserByAccount(account);
+                System.out.println("Chào mừng bạn " + user.getFullName() + " đã tới cửa hàng <3");
                 System.out.println("1. Hiển thị sản phẩm.");
                 System.out.println("2. Đặt hàng.");
                 System.out.println("3. Giỏ hàng.");

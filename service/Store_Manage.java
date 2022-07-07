@@ -45,7 +45,6 @@ public class Store_Manage implements Serializable {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(account);
         return matcher.find();
-
     }
 
     public Account addAccount(){
@@ -60,9 +59,11 @@ public class Store_Manage implements Serializable {
         System.out.println("-------------------------");
         String name;
         do {
-            System.out.println("Nhập tên tài khoản: ");
-            name = scanner.nextLine();
-        }while (method_account.checkAccount(name) && !checkAccountByChar(name));
+          do {
+              System.out.println("Nhập tên tài khoản: ");
+              name = scanner.nextLine();
+          }while (!checkAccountByChar(name));
+        }while (method_account.checkAccount(name));
         String pass;
         do {
             System.out.println("Nhập mật khẩu: ");
@@ -139,9 +140,11 @@ public class Store_Manage implements Serializable {
         System.out.println("-------------------------");
         String accountNumber;
         do {
-            System.out.println("Nhập số tài khoản ngân hàng : ");
-            accountNumber = scanner.nextLine();
-        }while (method_bank.checkAccountNumber(accountNumber) && !checkAccountNumber(accountNumber));
+            do {
+                System.out.println("Nhập số tài khoản ngân hàng : ");
+                accountNumber = scanner.nextLine();
+            }while (!checkAccountNumber(accountNumber));
+        }while (method_bank.checkAccountNumber(accountNumber) );
         int money = 0;
         if (method_bank.bankList.size() > 0){
             Bank.ID_Bank = method_bank.bankList.get(method_bank.bankList.size()-1).getId() + 1;
@@ -187,10 +190,6 @@ public class Store_Manage implements Serializable {
             System.out.println("Bạn đã nhập sai quá 3 lần xin vui lòng thử lại sau !!!");
         }
     }
-    public void  displayBank(){
-        method_bank.displayAll();
-    }
-
     // Khi nhấn vào thanh toán sẽ có 2 hình thức thanh toán là COD và Online
     // Sau khi nhấn thanh toán sẽ trở ra Menu cửa hàng ban đầu.
 
@@ -235,9 +234,11 @@ public class Store_Manage implements Serializable {
         String name = scanner.nextLine();
         String phone;
         do {
-            System.out.println("Nhập số điện thoại liên hệ: ");
-            phone =scanner.nextLine();
-        }while (!checkPhoneByChar(phone) && !method_user.checkPhoneInList(phone));
+            do {
+                System.out.println("Nhập số điện thoại liên hệ: ");
+                phone =scanner.nextLine();
+            }while (!checkPhoneByChar(phone));
+        }while (method_user.checkPhoneInList(phone));
         System.out.println("Nhập địa chỉ liên hệ: ");
         String address = scanner.nextLine();
         if (method_user.UserList.size() > 0){
@@ -595,14 +596,27 @@ public class Store_Manage implements Serializable {
 
 
     // -------------------------Orders-------------------------
-    public Order addOrder(String account){
+
+
+    public void addOrder(String account){
         Order order = creatOrder(account);
-        System.out.println(order.toString());
-        System.out.println("----------------------------------");
-        System.out.println("Bạn đã đặt hàng thành công !!! ");
-        System.out.println("----------------------------------");
-        method_oder.add(order);
-        return order;
+        boolean flag = false;
+        long amount;
+        for (Order order1 : method_oder.creatListByAccount(account)){
+            if (order1.getProduct().getId() == order.getProduct().getId()){
+                flag = true;
+                amount = order.getCount() + order1. getCount();
+                order1.setCount(amount);
+                System.out.println(order1);
+            }
+        }
+        if (!flag){
+            System.out.println(order);
+            System.out.println("----------------------------------");
+            System.out.println("Bạn đã đặt hàng thành công !!! ");
+            System.out.println("----------------------------------");
+            method_oder.add(order);
+        }
     }
 
     // Kiểm tra số lượng hàng còn trong kho > 0 và số lượng mua phải nhỏ hơn số lương hàng trong kho mới đặt mua được;
@@ -703,10 +717,9 @@ public class Store_Manage implements Serializable {
 
     public void displayOrderByAccount (String account){
         System.out.println("------------------------");
-        for (Order order : method_oder.orderList){
-            if (order.getAccount().getAccount().equals(account)){
-                System.out.println(order);
-            }
+        ArrayList<Order> list = method_oder.creatListByAccount(account);
+        for (Order order : list){
+            System.out.println(order);
         }
     }
 
@@ -921,7 +934,7 @@ public class Store_Manage implements Serializable {
                 paymentBill(account);
             }
         }else {
-            System.out.println("Thanh toán thất bạn tài khoản của bạn không đủ để thanh toán");
+            System.out.println("Thanh toán thất bại. Tài khoản của bạn không đủ tiền để thanh toán");
             updateMoney();
             paymentBill(account);
         }
@@ -942,8 +955,6 @@ public class Store_Manage implements Serializable {
 
     }
 
-
-
     public void turnOver(){
         int money = 0;
         for (Bill bill : method_bill.BillList){
@@ -953,7 +964,10 @@ public class Store_Manage implements Serializable {
 
     }
 
-
+    public static void main(String[] args) {
+        Store_Manage manage = new Store_Manage();
+        manage.addAccount();
+    }
 }
 
 

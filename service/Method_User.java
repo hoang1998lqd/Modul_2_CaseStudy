@@ -101,10 +101,10 @@ public class Method_User implements CRUD<User> {
     public boolean checkPhoneInList(String phone){
         for (User user : UserList){
             if (phone.equals(user.getPhoneNumber())){
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     
