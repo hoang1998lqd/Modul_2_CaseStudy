@@ -52,6 +52,7 @@ public class Store_Manage implements Serializable {
     public Account addAccount(){
         Account account = creatAccount();
         System.out.println("Tạo mới tài khoản thành công !!!");
+        System.out.println("-------------------------------------");
         System.out.println("Nhập thông tin người dùng: ");
         addUser(account);
         return method_account.add(account);
@@ -74,7 +75,6 @@ public class Store_Manage implements Serializable {
         }while (!checkAccountByChar(pass));
         if (method_account.accountList.size() > 0){
             Account.ID_Account = method_account.accountList.get(method_account.accountList.size()-1).getId() + 1;
-
         }
         return new Account(name,pass);
     }
@@ -135,6 +135,7 @@ public class Store_Manage implements Serializable {
     public Bank addBank(){
         Bank bank = creatBank();
         System.out.println("Liên kết tài khoản thành công !!!");
+        System.out.println("-------------------------------------");
          method_bank.add(bank);
          return bank;
     }
@@ -281,7 +282,7 @@ public class Store_Manage implements Serializable {
         User user = method_user.deleteById(id);
         Bank bank = method_bank.deleteById(id);
         Account account = method_account.deleteById(id);
-        if (user != null && bank !=null && account != null){
+        if (user == null && bank ==null && account == null){
             System.out.println("Xóa người dùng thành công !!!");
         }else {
             System.out.println("Xóa người dùng thất bại do không tìm thấy ID theo yêu cầu !!!");
@@ -295,7 +296,6 @@ public class Store_Manage implements Serializable {
                    System.out.println(user);
                }
             }
-
         }
 
     public void displayUserById(){
@@ -441,7 +441,7 @@ public class Store_Manage implements Serializable {
         System.out.println("Nhập ID bạn cần xóa: ");
         int id = Integer.parseInt(scanner.nextLine());
         Product product = method_product.deleteById(id);
-        if (product != null){
+        if (product == null){
             System.out.println("Xóa sản phẩm thành công !!!");
         }
         else {
@@ -915,6 +915,7 @@ public class Store_Manage implements Serializable {
     public void confirmOrder(String account){
         System.out.println("-------------------------------------");
         System.out.println("Cảm ơn bạn đã mua hàng ở cửa hàng chúng tôi !!!");
+        System.out.println("-------------------------------------");
         Bill bill = getBillByAccount(account);
         bill.setOrderStatus("Đã nhận hàng thành công...");
         bill.setPaymentStatus("Đã thanh toán...");
